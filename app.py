@@ -46,7 +46,7 @@ def login():
                 
                 session["username"] = request.form.get("username")
 
-                return redirect(url_for('page2'))  #page2 is function name not html file name
+                return redirect(url_for('home'))  #page2 is function name not html file name
                 
             else:
                 flash("incorrect username or password")
