@@ -20,6 +20,10 @@
   padding: 16px;
   font-size: 16px;
   border: none;
+  
+
+  
+  
 }
 
 .dropdown {
@@ -44,47 +48,54 @@
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #3e8e41;border-radius:25px;font-style: italic;}
+.dropdown-content a:hover {background-color: #3e8e41;border-radius:15px;font-style: italic;color: white;}
 
 .dropdown:hover .dropdown-content {display: block;}
 
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
 </style>
 </head>
-<body>
-
+<body style="background-color: #eee7e7;">
+    
 <div class="headercls" align="center" >
-    <p><h1>Welcome to Indian Stocks Anslysis<h1></b></p>
+    
+    <p><h1>Welcome to Indian Stocks Anslysis<h1></p>
     
 </div>
 <br>
 <div style="background-color: #3e8e41;">
     <div class="dropdown">
-    <button class="dropbtn"><b> Category</b></button>
-    <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
-        <a href="#">Automobiles</a>
-        <a href="#">Defence</a>
-        <a href="#">Pharma</a>
+        <button class="dropbtn"><b>Portfolio</b></button>
+        <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
+            <a href="#">Current</a>
+            <a href="#">Target</a>
+            
+        </div>
     </div>
+
+    <div class="dropdown">
+        <button class="dropbtn"><b> Category</b></button>
+        <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
+            <a href="#">Automobiles</a>
+            <a href="#">Defence</a>
+            <a href="#">Pharma</a>
+        </div>
     </div>
 
     <div class="dropdown">
         <button class="dropbtn"><b>Data Input</b></button>
         <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
-        <a href="#">Add YF company code</a>
-        <a href="#">Add Crash Date</a>
-        <a href="#">Execute Packages</a>
-        <a href="#">Output</a>
+            <a href="#">Add YF company code</a>
+            <a href="#">Add Crash Date</a>
+            <a href="#">Execute Packages</a>
+            <a href="#">Output</a>
         </div>
     </div>
 
     <div class="dropdown">
         <button class="dropbtn"><b>Post</b></button>
         <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
-        <a href="#">Add YF company code</a>
-        <a href="#">Add Crash Date</a>
-        <a href="#">Execute Packages</a>
-        <a href="#">Output</a>
+        
         </div>
     </div>
 
@@ -98,15 +109,15 @@
 
 </div>
 
-<br>
 
        
     
-</div>
+<!-- <img src="{{url_for('static', filename='stocks_img.png')}}" >  -->
+
 
 
 <div>
-    <table style="border-color: black;">
+    <table style="border: 1px solid #990000; border-collapse: collapse">
             <th>id</th>
             <th>id</th>
             <th>id</th>
@@ -115,6 +126,8 @@
     </table>
     
 </div>
+
+
 
 </body>
 </html>
