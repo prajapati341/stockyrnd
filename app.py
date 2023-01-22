@@ -10,7 +10,7 @@ import warnings
 import logging  
 from funclist import sucess_fun,mysql_func
 
-from flask import Flask,render_template,request,redirect, url_for,session,flash  
+from flask import Flask,render_template,request,redirect, url_for,session,flash
 
 app = Flask(__name__)
 app.secret_key = "##44547466"
@@ -19,7 +19,53 @@ app.secret_key = "##44547466"
 
 @app.route('/newyfcode')
 def newyfcode():
-    return render_template('newyfcode.html')
+    with mysql_func().connect() as conn:
+        select_all_query="select company_name,company_code,company_sector from company_code"
+        get_all_df=conn.execute(select_all_query)
+        get_all_df=pd.DataFrame(get_all_df)
+
+        select_sector_query="select sector from sector"
+        sector_df=conn.execute(select_sector_query).fetchall()
+        sector_df=pd.DataFrame(sector_df)
+        sector_df=sector_df['sector']
+        #print(sector_df)
+
+    return render_template('newyfcode.html', tables=[get_all_df.to_html(index=False)], titles=[''],sector_df=sector_df)
+
+
+@app.route('/newyfcodeupdate', methods=['GET', 'POST'])
+def newyfcodeupdate():
+    results = {}
+
+    if request.method=='POST':
+        company_name=request.form['company_name']
+        company_code=request.form['company_code']
+        company_sector=request.form['company_sector']
+        #r=results.get(company_sector)
+        #print(r)
+
+        with mysql_func().connect() as conn:
+            insert_query=f"insert into company_code(company_name,company_code,company_sector) values('{company_name}','{company_code}','{company_sector}')"
+            conn.execute(insert_query)
+
+            count_query="select count(*) from company_code"
+            getcount=conn.execute(count_query).fetchone()[0]
+            
+
+            
+
+
+            flash(f"Insert new record :  {company_name}  : {getcount}")
+            
+            conn.close()
+            #return getcount
+            return redirect(url_for('newyfcode'))    
+
+        
+
+        
+    #return 'submited'
+    
 
 
 
@@ -28,7 +74,6 @@ def output():
      with mysql_func().connect() as conn:
         result=conn.execute("select * from stock_data")
         df=pd.DataFrame(result)
-
         
 
         return render_template('output.html', tables=[df.to_html(index=False)], titles=[''])
@@ -77,5 +122,6 @@ if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')
     
     #app.run()
+
 
 

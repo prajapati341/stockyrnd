@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
-table,tr,td,th{
+tr{
     border: 1px solid black;
 }
 .menu_header{
@@ -151,16 +151,51 @@ border-radius:15px;
 
 
 <div>
+   
+
+    <form action="{{url_for('newyfcodeupdate')}}", method="post">
     <table>
         <tr>
-            <th>Head1</th>
+            <td>Company Name</td><td><input type="text" name="company_name" id="company_name" style="width: 300px;"></td>
         </tr>
         <tr>
-            <td>1</td>
+            <td>Company Code</td><td><input type="text" name="company_code" id="company_code" style="width: 300px;"></td>
+        </tr>
+        <!---
+        <tr>
+            <td>Sector</td><td><input type="text" name="company_sector" id="company_sector" style="width: 300px;"></td>
+        </tr>
+        -->
+        <tr>
+            <td>Sector</td>
+            <td>
+                <select name="company_sector" id="company_sector">
+                    {% for i in sector_df %}
+                    <OPTION value={{i}}>{{i}}</OPTION>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td></td><td><input type="submit" id="submit"></td>
         </tr>
     </table>
+    {% for message in get_flashed_messages() %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+    </form>
+    
 </div>
 
+<br><br>
+
+<div>
+    {% for table in tables %}
+            {{titles[loop.index]}}
+            {{ table|safe }}
+    {% endfor %}
+</div>
        
     
 <!-- <img src="{{url_for('static', filename='stocks_img.png')}}" >  -->
