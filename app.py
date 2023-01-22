@@ -17,6 +17,24 @@ app.secret_key = "##44547466"
 
 
 
+@app.route('/newyfcode')
+def newyfcode():
+    return render_template('newyfcode.html')
+
+
+
+@app.route('/output')
+def output():
+     with mysql_func().connect() as conn:
+        result=conn.execute("select * from stock_data")
+        df=pd.DataFrame(result)
+
+        
+
+        return render_template('output.html', tables=[df.to_html(index=False)], titles=[''])
+
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -24,7 +42,6 @@ def index():
 
 @app.route('/home')
 def home():
-    
     return render_template('home.html')
 
 
@@ -50,14 +67,14 @@ def login():
                 
             else:
                 flash("incorrect username or password")
-                return redirect(url_for('home'))   #home is function name not html file name
+                return redirect(url_for('index'))   #home is function name not html file name
 
 
 
 
 
 if __name__ == '__main__':
-    app.run(debug=False,host='0.0.0.0')
+    app.run(debug=True,host='0.0.0.0')
     
     #app.run()
 

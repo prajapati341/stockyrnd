@@ -4,6 +4,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
+table,tr,td,th{
+    border: 1px solid black;
+}
+.menu_header{
+border-radius:15px;
+
+  position: absolute;
+  text-align: center;
+  min-width: 200px;
+  z-index: 1;
+}
+
+.headlinediv {
+  
+  background-color: #d1f1d2;
+  padding: 5px;
+  font-size: 12px;
+  border: none;
+  
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+    
+}
+
+.headline {
+  
+  background-color: #d1f1d2;
+  color: #3e8e41;
+  padding: 5px;
+  font-size: 12px;
+  border: none;
+
+}
 
 .dropbtn {
   
@@ -20,6 +55,8 @@
   padding: 10px;
   font-size: 16px;
   border: none;
+  
+
   
   
 }
@@ -62,7 +99,6 @@
     
 </div>
 <br>
-
 <div style="background-color: #3e8e41;">
     <div class="dropdown">
         <button class="dropbtn"><b>Portfolio</b></button>
@@ -99,33 +135,36 @@
         </div>
     </div>
 
+    <div class="headlinediv">
+        <button class="headline"><b>Enter Company Code</b></button>
+      
+    </div>
+
+
     <div class="logoutbutton" style="float:right;">
         <div style="color: white;">
             <p>Logout</p>
         </div>
-        
-        
     </div>
 
 </div>
 
 
+<div>
+    <table>
+        <tr>
+            <th>Head1</th>
+        </tr>
+        <tr>
+            <td>1</td>
+        </tr>
+    </table>
+</div>
+
        
     
 <!-- <img src="{{url_for('static', filename='stocks_img.png')}}" >  -->
 
-
-
-<div>
-    <table style="border: 1px solid #990000; border-collapse: collapse">
-            <th>id</th>
-            <th>id</th>
-            <th>id</th>
-            <th>id</th>
-            <th>id</th>
-    </table>
-    
-</div>
 
 
 

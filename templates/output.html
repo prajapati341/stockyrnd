@@ -4,6 +4,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
+table,tr,td,th{
+    border:1px solid;
+}
+.menu_header{
+border-radius:15px;
+
+  position: absolute;
+  text-align: center;
+  min-width: 200px;
+  z-index: 1;
+}
 
 .dropbtn {
   
@@ -20,6 +31,8 @@
   padding: 10px;
   font-size: 16px;
   border: none;
+  
+
   
   
 }
@@ -62,7 +75,6 @@
     
 </div>
 <br>
-
 <div style="background-color: #3e8e41;">
     <div class="dropdown">
         <button class="dropbtn"><b>Portfolio</b></button>
@@ -99,33 +111,27 @@
         </div>
     </div>
 
+
     <div class="logoutbutton" style="float:right;">
         <div style="color: white;">
             <p>Logout</p>
         </div>
-        
-        
     </div>
 
 </div>
 
 
+<div>
+    {% for table in tables %}
+          
+            {{ table|safe }}
+    {% endfor %}
+</div>
+
        
     
 <!-- <img src="{{url_for('static', filename='stocks_img.png')}}" >  -->
 
-
-
-<div>
-    <table style="border: 1px solid #990000; border-collapse: collapse">
-            <th>id</th>
-            <th>id</th>
-            <th>id</th>
-            <th>id</th>
-            <th>id</th>
-    </table>
-    
-</div>
 
 
 
