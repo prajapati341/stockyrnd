@@ -1,44 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script>
+    
+    function validation()
+    {
+        let company_name=document.forms['form1']['company_name'].value;
+        let company_code=document.forms['form1']['company_code'].value;
+        if (company_name==''){
+            alert("Please fill the company name");
+            return false
+        }
+        else if(company_code==''){
+            alert("Please enter YF code");
+            return false;
+        }
+        else if(company_sector==''){
+            alert("Please select the sector");
+            return false;
+        }
+    }
+    
+</script>    
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
-tr{
-    border: 1px solid black;
-}
-.menu_header{
-border-radius:15px;
-
-  position: absolute;
-  text-align: center;
-  min-width: 200px;
-  z-index: 1;
-}
-
-.headlinediv {
-  
-  background-color: #d1f1d2;
-  padding: 5px;
-  font-size: 12px;
-  border: none;
-  
-  top:0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+table{
     
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 5px 10px #d3e6d3;
+    border: none;
+    size: 10px;
 }
 
-.headline {
-  
-  background-color: #d1f1d2;
-  color: #3e8e41;
-  padding: 5px;
-  font-size: 12px;
-  border: none;
-
-}
 
 .dropbtn {
   
@@ -108,7 +103,7 @@ border-radius:15px;
             
         </div>
     </div>
-
+<!--
     <div class="dropdown">
         <button class="dropbtn"><b> Category</b></button>
         <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
@@ -117,7 +112,7 @@ border-radius:15px;
             <a href="#">Pharma</a>
         </div>
     </div>
-
+-->
     <div class="dropdown">
         <button class="dropbtn"><b>Data Input</b></button>
         <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
@@ -135,10 +130,7 @@ border-radius:15px;
         </div>
     </div>
 
-    <div class="headlinediv">
-        <button class="headline"><b>Enter Company Code</b></button>
-      
-    </div>
+    
 
 
     <div class="logoutbutton" style="float:right;">
@@ -149,36 +141,46 @@ border-radius:15px;
 
 </div>
 
-
+<div  style="margin-left: auto;margin-right: auto;
+width: 10%;background-color: #e3ebe3;padding: 10px;">
+    <b>Enter Company Code</b>
+</div>
+<br>
 <div>
    
 
-    <form action="{{url_for('newyfcodeupdate')}}", method="post">
-    <table>
+    <form name="form1" action="{{url_for('newyfcodeupdate')}}", onsubmit="return validation()", method="post">
+    <table style="border:1px solid black;margin-left: auto;margin-right: auto;box-shadow: 5px 10px #d3e6d3;">
         <tr>
-            <td>Company Name</td><td><input type="text" name="company_name" id="company_name" style="width: 300px;"></td>
+            <td style="font:bold;color: #3e8e41;font-weight: bold;">Company Name</td><td><input type="text" name="company_name" id="company_name" style="width: 300px;"></td>
         </tr>
         <tr>
-            <td>Company Code</td><td><input type="text" name="company_code" id="company_code" style="width: 300px;"></td>
+            <td  style="font:bold;color: #3e8e41;font-weight: bold;">Yahoo Finanace Code</td><td><input type="text" name="company_code" id="company_code" style="width: 300px;" oninput="this.value = this.value.toUpperCase()"></td>
         </tr>
-        <!---
+        
+
+
         <tr>
-            <td>Sector</td><td><input type="text" name="company_sector" id="company_sector" style="width: 300px;"></td>
-        </tr>
-        -->
-        <tr>
-            <td>Sector</td>
+            <td  style="font:bold;color: #3e8e41;font-weight: bold;">Sector</td>
             <td>
-                <select name="company_sector" id="company_sector">
+                <select name="company_sector" id="company_sector"  style="font:bold;color: #043a06;font-weight: bold;">
                     {% for i in sector_df %}
-                    <OPTION value={{i}}>{{i}}</OPTION>
+                    <OPTION  value={{i}}>{{i}}</OPTION>
                     {% endfor %}
                 </select>
             </td>
         </tr>
 
+
+        
         <tr>
-            <td></td><td><input type="submit" id="submit"></td>
+            <td></td>
+            <td>
+                <input type="submit" id="submit" style="background-color:#4CAF50;cursor: pointer;padding: 10px 20px;text-align: center;text-decoration: none;border: none;color: white;font-weight: bold;">
+                <input type="checkbox" id="stock_data" name="stock_data" value="yes" style="padding-left: 1em;" checked>
+                <label for="stock_data" style="font:bold;color: black;font-weight: bold;font-size: 10px;">Fetch last 7 days data</label>
+            
+            </td>
         </tr>
     </table>
     {% for message in get_flashed_messages() %}
@@ -190,12 +192,12 @@ border-radius:15px;
 
 <br><br>
 
-<div>
+
     {% for table in tables %}
             {{titles[loop.index]}}
             {{ table|safe }}
     {% endfor %}
-</div>
+
        
     
 <!-- <img src="{{url_for('static', filename='stocks_img.png')}}" >  -->

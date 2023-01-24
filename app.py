@@ -20,7 +20,7 @@ app.secret_key = "##44547466"
 @app.route('/newyfcode')
 def newyfcode():
     with mysql_func().connect() as conn:
-        select_all_query="select company_name,company_code,company_sector from company_code"
+        select_all_query="select company_name ,company_code,company_sector from company_code order by cmp_code desc"
         get_all_df=conn.execute(select_all_query)
         get_all_df=pd.DataFrame(get_all_df)
 
@@ -51,7 +51,6 @@ def newyfcodeupdate():
             count_query="select count(*) from company_code"
             getcount=conn.execute(count_query).fetchone()[0]
             
-
             
 
 
@@ -119,7 +118,7 @@ def login():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0')
+    app.run(debug=False,host='0.0.0.0')
     
     #app.run()
 
