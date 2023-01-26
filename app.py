@@ -9,7 +9,7 @@ from sqlalchemy import MetaData,Table, Column, Integer, String,Float,DateTime
 import warnings
 import logging  
 from funclist import sucess_fun,mysql_func
-from executefunc import gettest,test_func
+from executefunc import gettest,outputcount,sector_list_query
 
 from flask import Flask,render_template,request,redirect, url_for,session,flash
 
@@ -21,17 +21,18 @@ app.secret_key = "##44547466"
 @app.route('/newyfcode')
 def newyfcode():
     with mysql_func().connect() as conn:
-        select_all_query="select company_name ,company_code,company_sector from company_code order by cmp_code desc"
-        get_all_df=conn.execute(select_all_query)
-        get_all_df=pd.DataFrame(get_all_df)
+        
+        get_all_df=outputcount(conn)  #function outputcount
+        sector_df=sector_list_query(conn) #function sector_list_query
 
-        select_sector_query="select sector from sector"
-        sector_df=conn.execute(select_sector_query).fetchall()
-        sector_df=pd.DataFrame(sector_df)
-        sector_df=sector_df['sector']
-        #print(sector_df)
+        
+        
+    try:
+        return render_template('newyfcode.html', tables=[get_all_df.to_html(index=False,classes='df2')], titles=['na','Company Yahoo Finance List'],sector_df=sector_df)
+    except:
+        flash(f"{sector_df}")
+        return sector_df
 
-    return render_template('newyfcode.html', tables=[get_all_df.to_html(index=False)], titles=[''],sector_df=sector_df)
 
 
 @app.route('/newyfcodeupdate', methods=['GET', 'POST'])
@@ -50,7 +51,7 @@ def newyfcodeupdate():
 
             check_code_query=f"select distinct company_code from company_code where company_code='{company_code}'"
             check_code_df=conn.execute(check_code_query).fetchone()
-            test_func(check_code_df)
+            
             print(check_code_df)
 
             if check_code_df is None:
@@ -67,8 +68,6 @@ def newyfcodeupdate():
             else:
                 
                 flash(f"{company_code} code already exists")
-                
-                
 
             conn.close()
             
@@ -82,11 +81,10 @@ def newyfcodeupdate():
 @app.route('/output')
 def output():
      with mysql_func().connect() as conn:
-        result=conn.execute("select * from stock_data")
-        df=pd.DataFrame(result)
         
 
-        return render_template('output.html', tables=[df.to_html(index=False)], titles=[''])
+        return render_template('output.html', dfs=[outputcount(conn).to_html(index=False,classes='df')], titles=['na','Complete list'])  #Calling function outputcount()
+        conn.close()
 
 
 

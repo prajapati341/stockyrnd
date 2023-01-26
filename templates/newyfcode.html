@@ -22,17 +22,25 @@
     }
     
 </script>    
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 <style>
 
-table{
-    
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 5px 10px #d3e6d3;
-    border: none;
-    size: 10px;
+h2       { color: #377ba8; }
+
+table.df2, .df2 th, .df2 td {
+  border: none;
+  border-bottom: 1px solid #C8C8C8;
+  border-collapse: collapse;
+  text-align:left;
+  padding: 10px;
+  margin-bottom: 40px;
+  font-size: 0.9em;
 }
+tr:nth-child(odd)		{ background-color:#eee; }
+tr:nth-child(even)	{ background-color:#fff; }
+
+tr:hover            { background-color: #ffff99;}
+
 
 
 .dropbtn {
@@ -90,7 +98,7 @@ table{
     
 <div class="headercls" align="center" >
     
-    <p><h1>Welcome to Indian Stocks Anslysis<h1></p>
+    <p><h1>Welcome to <h1></p>
     
 </div>
 <br>
@@ -133,11 +141,11 @@ table{
     
 
 
-    <div class="logoutbutton" style="float:right;">
-        <div style="color: white;">
+    
+        <div style="color: white;float:right;">
             <p>Logout</p>
         </div>
-    </div>
+    
 
 </div>
 
@@ -192,13 +200,14 @@ width: 10%;background-color: #e3ebe3;padding: 10px;">
     
 </div>
 
-<br><br>
-
+<br>
+<div>
 
     {% for table in tables %}
-            {{titles[loop.index]}}
+            <h2>{{titles[loop.index]}}</h2>
             {{ table|safe }}
     {% endfor %}
+</div>
 
        
     

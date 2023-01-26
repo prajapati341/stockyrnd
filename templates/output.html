@@ -4,9 +4,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
-table,tr,td,th{
-    border:1px solid;
+
+h2       { color: #377ba8; }
+
+
+table.df, .df th, .df td {
+  border: none;
+  border-bottom: 1px solid #C8C8C8;
+  border-collapse: collapse;
+  text-align:left;
+  padding: 10px;
+  margin-bottom: 40px;
+  font-size: 0.9em;
+  
 }
+tr:nth-child(odd)		{ background-color:#eee; }
+tr:nth-child(even)	{ background-color:#fff; }
+
+tr:hover            { background-color: #bbecd4;}
+
+.column {
+    width: 100%;
+  }
+
 .menu_header{
 border-radius:15px;
 
@@ -14,6 +34,7 @@ border-radius:15px;
   text-align: center;
   min-width: 200px;
   z-index: 1;
+  
 }
 
 .dropbtn {
@@ -121,12 +142,15 @@ border-radius:15px;
 </div>
 
 
-<div>
-    {% for table in tables %}
-            {{titles[loop.index]}}
+<div style="float: left;block-size: 20px;position: fixed;">
+    {% for table in dfs %}
+            <h2>{{titles[loop.index]}}</h2>
             {{ table|safe }}
+            
+            
     {% endfor %}
 </div>
+
 
        
     
