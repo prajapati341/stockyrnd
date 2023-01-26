@@ -17,7 +17,7 @@ import pandas as pd
 
 def gettest(company_name,company_code,conn):
     
-    start_date = '2023-01-01'
+    start_date = '2023-01-21'
     end_date = '2023-01-31'
     
     stock_data = yf.download(company_code, start_date, end_date)

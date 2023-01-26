@@ -53,34 +53,28 @@ def newyfcodeupdate():
             test_func(check_code_df)
             print(check_code_df)
 
-            if check_code_df!=None:
+            if check_code_df is None:
                 
                 insert_query=f"insert into company_code(company_name,company_code,company_sector) values('{company_name}','{company_code}','{company_sector}')"
                 conn.execute(insert_query)
 
                 count_query="select count(*) from company_code"
                 getcount=conn.execute(count_query).fetchone()[0]
-                return 'record found'
-                #get_output=gettest(company_name,company_code,conn)
+                
+                get_output=gettest(company_name,company_code,conn)
     
-                #flash(f"Insert new record :  {company_name}  : {getcount} : {get_output}")
+                flash(f"New record entered for {get_output}  : {getcount}")
             else:
-                #return check_code_df
-                return 'record'
-                #flash('record exists')
+                
+                flash(f"{company_code} code already exists")
                 
                 
-            # else:
-            #     flash('record exist')
 
             conn.close()
             
     return redirect(url_for('newyfcode'))    
 
         
-
-        
-    #return 'submited'
     
 
 

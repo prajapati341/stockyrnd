@@ -183,8 +183,10 @@ width: 10%;background-color: #e3ebe3;padding: 10px;">
             </td>
         </tr>
     </table>
+    <br>
     {% for message in get_flashed_messages() %}
-            <div class="alert">{{ message }}</div>
+            <div  style="margin-left: auto;margin-right: auto;
+            width: 7%;color: #db4213;font-weight: bold;font-size: 5px;text-decoration: underline;">{{ message }}</div>
         {% endfor %}
     </form>
     
