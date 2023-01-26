@@ -9,6 +9,7 @@ from sqlalchemy import MetaData,Table, Column, Integer, String,Float,DateTime
 import warnings
 import logging  
 from funclist import sucess_fun,mysql_func
+from executefunc import gettest,test_func
 
 from flask import Flask,render_template,request,redirect, url_for,session,flash
 
@@ -35,30 +36,46 @@ def newyfcode():
 
 @app.route('/newyfcodeupdate', methods=['GET', 'POST'])
 def newyfcodeupdate():
+
     results = {}
 
     if request.method=='POST':
+
         company_name=request.form['company_name']
         company_code=request.form['company_code']
         company_sector=request.form['company_sector']
-        #r=results.get(company_sector)
-        #print(r)
-
+        stock_data=request.form['stock_data']
+        
         with mysql_func().connect() as conn:
-            insert_query=f"insert into company_code(company_name,company_code,company_sector) values('{company_name}','{company_code}','{company_sector}')"
-            conn.execute(insert_query)
 
-            count_query="select count(*) from company_code"
-            getcount=conn.execute(count_query).fetchone()[0]
-            
-            
+            check_code_query=f"select distinct company_code from company_code where company_code='{company_code}'"
+            check_code_df=conn.execute(check_code_query).fetchone()
+            test_func(check_code_df)
+            print(check_code_df)
 
+            if check_code_df!=None:
+                
+                insert_query=f"insert into company_code(company_name,company_code,company_sector) values('{company_name}','{company_code}','{company_sector}')"
+                conn.execute(insert_query)
 
-            flash(f"Insert new record :  {company_name}  : {getcount}")
-            
+                count_query="select count(*) from company_code"
+                getcount=conn.execute(count_query).fetchone()[0]
+                return 'record found'
+                #get_output=gettest(company_name,company_code,conn)
+    
+                #flash(f"Insert new record :  {company_name}  : {getcount} : {get_output}")
+            else:
+                #return check_code_df
+                return 'record'
+                #flash('record exists')
+                
+                
+            # else:
+            #     flash('record exist')
+
             conn.close()
-            #return getcount
-            return redirect(url_for('newyfcode'))    
+            
+    return redirect(url_for('newyfcode'))    
 
         
 
