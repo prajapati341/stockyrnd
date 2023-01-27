@@ -43,3 +43,7 @@ def mysql_func():
     except Exception as conn_err:
 
         print('connection error :',conn_err)
+
+
+def session_logout():
+    print('Logout Now')        

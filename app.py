@@ -114,9 +114,13 @@ def login():
     
             if rows1:
                 
-                session["username"] = request.form.get("username")
+                session['username'] = request.form.get('username')
+                
+                if 'username' in session:
+                    username=session['username']
 
-                return redirect(url_for('home'))  #page2 is function name not html file name
+                #return redirect(url_for('home'))  #page2 is function name not html file name
+                return render_template('home.html',sess_user=username)
                 
             else:
                 flash("incorrect username or password")
