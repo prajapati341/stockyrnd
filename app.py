@@ -28,7 +28,7 @@ def newyfcode():
         
         
     try:
-        return render_template('newyfcode.html', tables=[get_all_df.to_html(index=False,classes='df2')], titles=['na','Company Yahoo Finance List'],sector_df=sector_df)
+        return render_template('newyfcode.html', tables=[get_all_df.to_html(index=False,classes=['df2'])], titles=['na','Company Yahoo Finance List'],sector_df=sector_df)
     except:
         flash(f"{sector_df}")
         return sector_df

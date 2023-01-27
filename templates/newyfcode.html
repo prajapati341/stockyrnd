@@ -25,24 +25,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 <style>
 
+
+
 h2       { color: #377ba8; }
-
-table.df2, .df2 th, .df2 td {
-  border: none;
-  border-bottom: 1px solid #C8C8C8;
-  border-collapse: collapse;
-  text-align:left;
-  padding: 10px;
-  margin-bottom: 40px;
-  font-size: 0.9em;
-}
-tr:nth-child(odd)		{ background-color:#eee; }
-tr:nth-child(even)	{ background-color:#fff; }
-
-tr:hover            { background-color: #ffff99;}
-
-
-
+.fixTableHead {
+      overflow-y: auto;
+      height: 400px;
+      
+    }
+    .fixTableHead thead th {
+      position: sticky;
+      top: 0;
+      
+    }
+    table.df2 {
+      border-collapse: collapse;        
+      width: 100%;
+      
+    }
+    .df2 th,.df2 td {
+      padding: 8px 15px;
+      border: 2px solid #529432;
+      border: none;
+      text-align: left;
+    }
+    .df2 th {
+      background: #ABDD93;
+    }
+    .df2 tr:nth-child(odd)		{ background-color:#eee; }
+    .df2 tr:nth-child(even)	{ background-color:#fff; }
+    .df2 tr:hover            { background-color: #dce9da;}
 .dropbtn {
   
   background-color: #3e8e41;
@@ -150,7 +162,7 @@ tr:hover            { background-color: #ffff99;}
 </div>
 
 <div  style="margin-left: auto;margin-right: auto;
-width: 10%;background-color: #e3ebe3;padding: 10px;">
+width: 80%;background-color: #e3ebe3;padding: 5px;text-align: center;">
     <b>Enter Company Code</b>
 </div>
 <br>
@@ -158,7 +170,7 @@ width: 10%;background-color: #e3ebe3;padding: 10px;">
    
 
     <form name="form1" action="{{url_for('newyfcodeupdate')}}", onsubmit="return validation()", method="post">
-    <table style="border:1px solid black;margin-left: auto;margin-right: auto;box-shadow: 5px 10px #d3e6d3;">
+    <table style="border:1px solid black;margin-left: auto;margin-right: auto;box-shadow: 5px 10px #abafab;">
         <tr>
             <td style="font:bold;color: #3e8e41;font-weight: bold;">Company Name</td><td><input type="text" name="company_name" id="company_name" style="width: 300px;"></td>
         </tr>
@@ -200,11 +212,12 @@ width: 10%;background-color: #e3ebe3;padding: 10px;">
     
 </div>
 
-<br>
-<div>
+
+<div><h2 style="text-align: center;background-color: #deebf3;">Company List</h2></div>
+<div class="fixTableHead" style="font-size: 10px;box-shadow: 5px 10px #abafab;">
 
     {% for table in tables %}
-            <h2>{{titles[loop.index]}}</h2>
+            
             {{ table|safe }}
     {% endfor %}
 </div>
