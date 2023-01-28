@@ -4,28 +4,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
+.exec_button{
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color: #4CAF50;
+}  
+.fixTableHead {
+      overflow-y: auto;
+      height: 400px;
+      
+    }
+    .fixTableHead thead th {
+      position: sticky;
+      top: 0;
+    }
 
 h2       { color: #377ba8; }
 
 
-table.df, .df th, .df td {
-  border: none;
-  border-bottom: 1px solid #C8C8C8;
-  border-collapse: collapse;
-  text-align:left;
-  padding: 10px;
-  margin-bottom: 40px;
-  font-size: 0.9em;
-  
-}
-tr:nth-child(odd)		{ background-color:#eee; }
-tr:nth-child(even)	{ background-color:#fff; }
+table.tb1 {
+      border-collapse: collapse;        
+      width: 100%;
+      
+    }
+    .tb1 th,.tb1 td {
+      padding: 8px 15px;
+      border: 2px solid #529432;
+      border: none;
+      text-align: left;
+    }
+    .tb1 th {
+      background: #ABDD93;
+    }
+    .tb1 tr:nth-child(odd)		{ background-color:#eee; }
+    .tb1 tr:nth-child(even)	{ background-color:#fff; }
+    .tb1 tr:hover            { background-color: #dce9da;}
 
-tr:hover            { background-color: #bbecd4;}
-
-.column {
-    width: 100%;
-  }
 
 .menu_header{
 border-radius:15px;
@@ -143,16 +164,53 @@ border-radius:15px;
 
 
 <div style="float: left;block-size: 20px;position: fixed;">
-    {% for table in dfs %}
-            <h2>{{titles[loop.index]}}</h2>
-            {{ table|safe }}
-            
-            
-    {% endfor %}
+    
 </div>
 
+<br>
 
-       
+<form action="" >
+<div class="fixTableHead" style="font-size: 10px;">
+<table class="tb1">
+  <tr style="position: sticky;top: 0;">
+    <th>Company DB ID</th>
+    <th>Company Name</th>
+    <th>Company Code</th>
+    <th>Records</th>
+    <th>First Record</th>
+    <th>Last Updated Record</th>
+    <th>No of days</th>
+    <th>Execute Package</th>
+  </tr>
+  
+    {% for i in range(0,len)%}
+    <tr>
+      <td>{{dfs.loc[i]['Company DB ID']}}</td>
+      <td>{{dfs.loc[i]['Company Name']}}</td>
+      <td><a href="{{dfs.loc[i]['Company Code']}}"><b>{{dfs.loc[i]['Company Code']}}</b></a></td>
+    
+      <td>{{dfs.loc[i]['Records']}}</td>
+      <td>{{dfs.loc[i]['First Record']}}</td>
+      <td>{{dfs.loc[i]['Last Updated Record']}}</td>
+      <td>{{dfs.loc[i]['No of days']}}</td>
+      <td>
+        <input type="checkbox" id="exec_code" name="exec_code" value="{{dfs.loc[i]['Company Code']}}">
+      </td>
+      
+      
+    </tr>
+    
+    {%endfor%}
+    
+  
+</table>    
+</div>   
+<div style="margin-left: auto;margin-right: auto;">
+<button class="exec_button" value="exec">Execute All Codes</button>
+<button class="exec_button" value="exec">Execute All Codes</button>
+</div>
+</form>
+
     
 <!-- <img src="{{url_for('static', filename='stocks_img.png')}}" >  -->
 

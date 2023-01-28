@@ -1,64 +1,95 @@
-<!DOCTYPE html>   
-<html>   
-<head>  
-<meta name="viewport" content="width=device-width, initial-scale=1">  
-<title> Login Page </title>  
-<style>   
-Body {  
-  font-family: Calibri, Helvetica, sans-serif;  
-  background-color: pink;  
-}  
-button {   
-       background-color: #4CAF50;   
-       width: 50%;  
-        color: white;   
-        padding: 15px;   
-        margin: 10px 0px;   
-        border: none;   
-        cursor: pointer;   
-        font-weight: bold;
-         }   
- form {   
-        border: 3px solid #f1f1f1;   
-    }   
- input[type=text], input[type=password] {   
-        width: 100%;   
-        margin: 8px 0;  
-        padding: 12px 20px;   
-        display: inline-block;   
-        border: 2px solid green;   
-        box-sizing: border-box;   
-    }  
- button:hover {   
-        opacity: 0.7;   
-    }   
-  .cancelbtn {   
-        width: auto;   
-        padding: 10px 18px;  
-        margin: 10px 5px;  
-    }   
-        
-     
- .container {   
-        padding: 100px;   
-        background-color: lightblue;  
-    }   
-</style>   
-</head>    
-<body>    
-    <center> <h1> Login </h1> </center>   
-    <form action="/login" method="POST">  
-        <div class="container">   
-            <label>Username : </label>   
-            <input type="text" placeholder="Enter Username" value="" name="username" required>  
-            <label>Password : </label>   
-            <input type="password" placeholder="Enter Password" value="" name="password" required>  
-            
-            <button type="submit">Login</button>
-            {% for message in get_flashed_messages() %}
-            <p style="font-weight: bold;color: red;">{{message}}</p>
-            {% endfor %}
-        </div>   
-    </form>     
-</body>     
-</html>  
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body, html {
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #bcccfa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.bg-img {
+  /* The image used */
+  background-image: url('/static/img/fundatamental.jpg');
+
+  min-height: 400px;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+/* Add styles to the form container */
+.container {
+  position: absolute;
+  right: 0px;
+  margin: 20px;
+  max-width: 400px;
+  min-height: 400px;
+  padding: 16px;
+  background-color: white;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit button */
+.btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.btn:hover {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<h2 style="text-align:center;">Stock Analysis</h2>
+<div class="bg-img">
+  <form action="/login" method="POST" class="container">
+    <h1>Login</h1>
+    
+    <label for="email"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" required>
+
+    <button type="submit" class="btn">Login</button>
+    {% for message in get_flashed_messages() %}
+    <p style="font-weight: bold;color: red;">{{message}}</p>
+    {% endfor %}
+    
+  </form>
+</div>
+
+
+
+</body>
+</html>

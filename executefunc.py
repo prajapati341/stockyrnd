@@ -38,9 +38,10 @@ def gettest(company_name,company_code,conn):
 
 def outputcount(conn):
     output_query='''
-    select a.company_name as 'Company Name',a.company_code as 'Company Code',count(a.company_code) as Records,b.company_sector as 'Company Sector',min(a.Date) as 'First Record',max(a.Date) as 'Last Updated Record',datediff(max(a.Date),min(a.Date)) as 'No of days' from stock_data a
+    select  b.cmp_code as 'Company DB ID',a.company_name as 'Company Name',a.company_code as 'Company Code',count(a.company_code) as Records,b.company_sector as 'Company Sector',min(a.Date) as 'First Record',max(a.Date) as 'Last Updated Record',datediff(max(a.Date),min(a.Date)) as 'No of days' from stock_data a
     left join company_code b on a.Company_Code=b.company_code
-    group by a.company_name,a.company_code,b.company_sector
+    group by b.cmp_code,a.company_name,a.company_code,b.company_sector
+    order by  b.cmp_code desc
     '''
     result=conn.execute(output_query)
     df=pd.DataFrame(result)

@@ -29,6 +29,8 @@ def newyfcode():
         
     try:
         return render_template('newyfcode.html', tables=[get_all_df.to_html(index=False,classes=['df2'])], titles=['na','Company Yahoo Finance List'],sector_df=sector_df)
+
+        
     except:
         flash(f"{sector_df}")
         return sector_df
@@ -81,9 +83,10 @@ def newyfcodeupdate():
 @app.route('/output')
 def output():
      with mysql_func().connect() as conn:
-        
+        output_df=outputcount(conn)
+        output_df_len=len(output_df)
 
-        return render_template('output.html', dfs=[outputcount(conn).to_html(index=False,classes='df')], titles=['na','Complete list'])  #Calling function outputcount()
+        return render_template('output.html', dfs=output_df,len=output_df_len)  #Calling function outputcount()
         conn.close()
 
 
