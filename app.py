@@ -152,6 +152,9 @@ def login():
                 return redirect(url_for('index'))   #home is function name not html file name
 
 
+@app.route('/logout')    
+def logout():
+    return render_template('index.html')
 
 
 

@@ -24,12 +24,21 @@ def gettest(company_name,company_code,conn):
         
         #stock_data = yf.download(company_code, start_date, end_date)
         stock_data = yf.download(company_code)
+        stock_data_interval_temp=yf.download(company_code,interval="1m")
 
         stock_data['Company_Name']=company_name
         stock_data['Company_Code']=company_code
 
+        stock_data_interval_temp['Company_Name']=company_name
+        stock_data_interval_temp['Company_Code']=company_code
+
         stock_data=stock_data.reset_index()
+        stock_data_interval_temp=stock_data_interval_temp.reset_index()
+
+
         stock_data.to_sql('stock_data',con=conn,index=False,if_exists='append')
+
+        stock_data_interval_temp.to_sql('stock_data_interval',con=conn,index=False,if_exists='append')
 
         return company_name
     except Exception as e:
@@ -38,10 +47,19 @@ def gettest(company_name,company_code,conn):
 
 def outputcount(conn):
     output_query='''
-    select  b.cmp_code as 'Company DB ID',a.company_name as 'Company Name',a.company_code as 'Company Code',count(a.company_code) as Records,b.company_sector as 'Company Sector',date(min(a.Date)) as 'First Record',date(max(a.Date)) as 'Last Updated Record',datediff(max(a.Date),min(a.Date)) as 'No of days' from stock_data a
-    left join company_code b on a.Company_Code=b.company_code
-    group by b.cmp_code,a.company_name,a.company_code,b.company_sector
-    order by  b.cmp_code desc
+    select a.*,b.Records as 'Interval Records',b.Noofdays as 'Interval Days' from (
+            select  b.cmp_code as 'CompanyDBID',a.company_name as 'Company Name',a.company_code as 'Company_Code',count(a.company_code) as Records,b.company_sector as 'Company Sector',date(min(a.Date)) as 'First Record',date(max(a.Date)) as 'Last Updated Record',datediff(max(a.Date),min(a.Date)) as 'No of days' from stock_data a
+            left join company_code b on a.Company_Code=b.company_code
+            group by b.cmp_code,a.company_name,a.company_code,b.company_sector
+        ) a
+            left join 
+        (    
+
+            select  b.cmp_code as 'CompanyDBID',a.company_name as 'Company Name',a.company_code as 'Company_Code',count(a.company_code) as Records,b.company_sector as 'Company Sector',date(min(a.datetime)) as 'First Record',date(max(a.datetime)) as 'Last Updated Record',datediff(max(a.datetime),min(a.datetime)) as 'Noofdays' from stock_data_interval a
+            left join company_code b on a.Company_Code=b.company_code
+            group by b.cmp_code,a.company_name,a.company_code,b.company_sector
+        ) b on a.Company_Code=b.Company_Code
+        order by a.CompanyDBID
     '''
     result=conn.execute(output_query)
     df=pd.DataFrame(result)
@@ -62,7 +80,7 @@ def sector_list_query(conn):
 
 def execute_yf_code(conn):
     max_query='''
-      select company_name,company_code,date(max(date)) max_date,date_add(date(max(date)),interval 1 day) start_date,date(now()) end_date  from stock_data where company_code in ('NATIONALUM.NS') group by company_name,company_code;
+      select company_name,company_code,date(max(date)) max_date,date_add(date(max(date)),interval 1 day) start_date,date(now()) end_date  from stock_data  group by company_name,company_code;
       '''
 
     exec_df=pd.DataFrame(conn.execute(max_query))

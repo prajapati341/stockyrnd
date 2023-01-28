@@ -177,19 +177,23 @@ border-radius:15px;
     <th>First Record</th>
     <th>Last Updated Record</th>
     <th>No of days</th>
+    <th>Interval Records</th>
+    <th>Execute Days</th>
     <th>Execute Package</th>
   </tr>
   
     {% for i in range(0,len)%}
     <tr>
-      <td>{{dfs.loc[i]['Company DB ID']}}</td>
+      <td>{{dfs.loc[i]['CompanyDBID']}}</td>
       <td>{{dfs.loc[i]['Company Name']}}</td>
-      <td><a href="{{dfs.loc[i]['Company Code']}}"><b>{{dfs.loc[i]['Company Code']}}</b></a></td>
+      <td><a href="{{dfs.loc[i]['Company_Code']}}"><b>{{dfs.loc[i]['Company_Code']}}</b></a></td>
     
       <td>{{dfs.loc[i]['Records']}}</td>
       <td>{{dfs.loc[i]['First Record']}}</td>
       <td>{{dfs.loc[i]['Last Updated Record']}}</td>
       <td>{{dfs.loc[i]['No of days']}}</td>
+      <td>{{dfs.loc[i]['Interval Records']}}</td>
+      <td>{{dfs.loc[i]['Interval Days']}}</td>
       <td>
         <input type="checkbox" id="exec_code" name="exec_code" value="{{dfs.loc[i]['Company Code']}}">
       </td>

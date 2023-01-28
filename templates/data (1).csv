@@ -1,0 +1,28 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		 <div class="historic-bar" style="width:542px; margin-bottom:5px;">
+			<span class="download-data-link"><a download target"_blank" style='cursor:pointer'  >Download file in csv format</a></span>
+		</div>
+		<div id='csvContentDiv' style='display:none;'>"Date","Symbol","Series","Open Price","High Price","Low Price","Last Traded Price ","Close Price","Total Traded Quantity","Turnover (in Lakhs)":"05-Jul-2022","NIFTYBEES","EQ","175.00","175.99","170.11","        172.00","172.04","46,28,550","8,028.15":"04-Jul-2022","NIFTYBEES","EQ","172.90","172.90","170.65","        172.63","172.63","32,49,155","5,580.55":</div>
+	
+
+Date, Symbol, Series, Open Price, High Price, Low Price, Last Traded Price , Close Price, Total Traded Quantity, Turnover (in Lakhs)
+05-Jul-2022, NIFTYBEES, EQ, 175.00, 175.99, 170.11,         172.00, 172.04, 4628550, 8028.15
+04-Jul-2022, NIFTYBEES, EQ, 172.90, 172.90, 170.65,         172.63, 172.63, 3249155, 5580.55
+
+
+
