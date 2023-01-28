@@ -138,7 +138,7 @@ h2       { color: #377ba8; }
         <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
             <a href="{{url_for('newyfcode')}}">Add YF company code</a>
             <a href="#">Add Crash Date</a>
-            <a href="#">Execute Packages</a>
+            <a href="{{url_for('execute')}}">Execute Packages</a>
             <a href="{{url_for('output')}}">Output</a>
         </div>
     </div>
@@ -166,7 +166,7 @@ width: 80%;background-color: #e3ebe3;padding: 5px;text-align: center;">
     <b>Enter Company Code</b>
 </div>
 <br>
-<div>
+<div style="font-weight: bold;font-size: 10px;">
    
 
     <form name="form1" action="{{url_for('newyfcodeupdate')}}", onsubmit="return validation()", method="post">

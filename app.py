@@ -9,7 +9,7 @@ from sqlalchemy import MetaData,Table, Column, Integer, String,Float,DateTime
 import warnings
 import logging  
 from funclist import sucess_fun,mysql_func
-from executefunc import gettest,outputcount,sector_list_query
+from executefunc import gettest,outputcount,sector_list_query,execute_yf_code
 
 from flask import Flask,render_template,request,redirect, url_for,session,flash
 
@@ -88,6 +88,28 @@ def output():
 
         return render_template('output.html', dfs=output_df,len=output_df_len)  #Calling function outputcount()
         conn.close()
+
+
+@app.route('/execute')
+def execute():
+     with mysql_func().connect() as conn:
+        output_df=outputcount(conn)
+        output_df_len=len(output_df)
+
+        return render_template('execute.html', dfs=output_df,len=output_df_len)  #Calling function outputcount()
+        conn.close()
+
+@app.route('/execute_output', methods=['GET', 'POST'])
+def execute_output():
+    with mysql_func().connect() as conn:
+        msg=execute_yf_code(conn)
+        flash(msg)
+        
+        #return render_template('execute.html')
+        return redirect(url_for('execute'))
+
+
+
 
 
 

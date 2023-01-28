@@ -7,7 +7,7 @@
 .exec_button{
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 10px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -15,6 +15,7 @@
   margin: 4px 2px;
   cursor: pointer;
   background-color: #4CAF50;
+  font-weight: bold;
 }  
 .fixTableHead {
       overflow-y: auto;
@@ -33,12 +34,14 @@ table.tb1 {
       border-collapse: collapse;        
       width: 100%;
       
+      
     }
     .tb1 th,.tb1 td {
       padding: 8px 15px;
       border: 2px solid #529432;
       border: none;
       text-align: left;
+      font-size: 5px;
     }
     .tb1 th {
       background: #ABDD93;
@@ -126,7 +129,7 @@ border-radius:15px;
             
         </div>
     </div>
-
+    <!----
     <div class="dropdown">
         <button class="dropbtn"><b> Category</b></button>
         <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
@@ -135,6 +138,7 @@ border-radius:15px;
             <a href="#">Pharma</a>
         </div>
     </div>
+      -->
 
     <div class="dropdown">
         <button class="dropbtn"><b>Data Input</b></button>
@@ -163,12 +167,15 @@ border-radius:15px;
 </div>
 
 
+<div style="float: left;block-size: 20px;position: fixed;">
+    
+</div>
 
 <br>
 
-<form action="" >
-<div class="fixTableHead" style="font-size: 10px;">
-<table class="tb1">
+<form name="exec_form1" action="{{url_for('execute_output')}}" onsubmit="return validation()" method="post">
+<div class="fixTableHead">
+<table class="tb1" style="font-weight: bold;">
   <tr style="position: sticky;top: 0;">
     <th>Company DB ID</th>
     <th>Company Name</th>
@@ -202,9 +209,18 @@ border-radius:15px;
   
 </table>    
 </div>   
+{% for message in get_flashed_messages() %}
+            <div  style="margin-left: auto;margin-right: auto;
+            width: 7%;color: #db4213;font-weight: bold;font-size: 5px;text-decoration: underline;">{{ message }}</div>
+  {% endfor %}
+
 <div style="margin-left: auto;margin-right: auto;">
-<button class="exec_button" value="exec">Execute All Codes</button>
-<button class="exec_button" value="exec">Execute All Codes</button>
+  
+  <input type="submit" class="exec_button" value="Refresh YF Codes">
+</div>
+<div style="margin-left: auto;margin-right: auto;">
+  
+  <img src='/static/output_img/pie_output_img.png' alt="">
 </div>
 </form>
 
