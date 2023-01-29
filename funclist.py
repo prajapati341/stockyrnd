@@ -55,14 +55,14 @@ def pwd_check(conn,username,password):
     
 
     if rows1:
-        session['username']=rows1[2]   #Set username from fetchone in tuple form
+        session['fullname']=rows1[1]   #Set username from fetchone in tuple form
         full_name=rows1[1]
 
-        if 'username' in session:
-            username=session['username']
-            pass_str=['yes',username,full_name]
+        if 'fullname' in session:
+            fullname=session['fullname']
+            pass_str=['yes',fullname]
             print('successful')
-            conn.close()
+            
             return pass_str
     else:
         print('invalid')
@@ -70,4 +70,9 @@ def pwd_check(conn,username,password):
 
 
 def session_logout():
+
+    if session['fullname'] is None:
+        return True
+    else:
+        return False
     print('Logout Now')        

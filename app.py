@@ -9,7 +9,7 @@ from sqlalchemy import MetaData,Table, Column, Integer, String,Float,DateTime
 
 import warnings
 import logging  
-from funclist import sucess_fun,mysql_func,pwd_check
+from funclist import sucess_fun,mysql_func,pwd_check,session_logout
 from executefunc import gettest,outputcount,sector_list_query,execute_yf_code
 
 from flask import Flask,render_template,request,redirect, url_for,session,flash
@@ -21,62 +21,70 @@ app.secret_key = "##44547466"
 
 @app.route('/newyfcode')
 def newyfcode():
-    with mysql_func().connect() as conn:
-        
-        get_all_df=outputcount(conn)  #function outputcount
-        sector_df=sector_list_query(conn) #function sector_list_query for drop_down
-    conn.close()
+    if session.get("fullname"):
+        print('logged in ')
+        with mysql_func().connect() as conn:
+            get_all_df=outputcount(conn)  #function outputcount
+            sector_df=sector_list_query(conn) #function sector_list_query for drop_down
+        conn.close()
 
-        
-        
-    try:
-        return render_template('newyfcode.html', tables=[get_all_df.to_html(index=False,classes=['df2'])], titles=['na','Company Yahoo Finance List'],sector_df=sector_df)
+            
+            
+        try:
+            return render_template('newyfcode.html', tables=[get_all_df.to_html(index=False,classes=['df2'])], titles=['na','Company Yahoo Finance List'],sector_df=sector_df)
 
-        
-    except:
-        flash(f"{sector_df}")
-        return sector_df
+            
+        except:
+            flash(f"{sector_df}")
+            return sector_df
+    else:
+
+        return redirect("/")
 
 
 
 @app.route('/newyfcodeupdate', methods=['GET', 'POST'])
 def newyfcodeupdate():
 
-    results = {}
+    if session.get("fullname"):
 
-    if request.method=='POST':
+        results = {}
 
-        company_name=request.form['company_name']
-        company_code=request.form['company_code']
-        company_sector=request.form['company_sector']
-        stock_data=request.form['stock_data']
+        if request.method=='POST':
+
+            company_name=request.form['company_name']
+            company_code=request.form['company_code']
+            company_sector=request.form['company_sector']
+            stock_data=request.form['stock_data']
+            
+            with mysql_func().connect() as conn:
+                newyfcodeupdate(conn,company_name,company_code,company_sector)
+
+                check_code_query=f"select distinct company_code from company_code where company_code='{company_code}'"
+                check_code_df=conn.execute(check_code_query).fetchone()
+                
+                print(check_code_df)
+
+                if check_code_df is None:
+                    
+                    insert_query=f"insert into company_code(company_name,company_code,company_sector) values('{company_name}','{company_code}','{company_sector}')"
+                    conn.execute(insert_query)
+
+                    count_query="select count(*) from company_code"
+                    getcount=conn.execute(count_query).fetchone()[0]
+                    
+                    get_output=gettest(company_name,company_code,conn)
         
-        with mysql_func().connect() as conn:
-            newyfcodeupdate(conn,company_name,company_code,company_sector)
+                    flash(f"New record entered for {get_output}  : {getcount}")
+                else:
+                    
+                    flash(f"{company_code} code already exists")
 
-            check_code_query=f"select distinct company_code from company_code where company_code='{company_code}'"
-            check_code_df=conn.execute(check_code_query).fetchone()
-            
-            print(check_code_df)
-
-            if check_code_df is None:
+                conn.close()
                 
-                insert_query=f"insert into company_code(company_name,company_code,company_sector) values('{company_name}','{company_code}','{company_sector}')"
-                conn.execute(insert_query)
-
-                count_query="select count(*) from company_code"
-                getcount=conn.execute(count_query).fetchone()[0]
-                
-                get_output=gettest(company_name,company_code,conn)
-    
-                flash(f"New record entered for {get_output}  : {getcount}")
-            else:
-                
-                flash(f"{company_code} code already exists")
-
-            conn.close()
-            
-    return redirect(url_for('newyfcode'))    
+        return redirect(url_for('newyfcode'))   
+    else:
+        return redirect("/") 
 
         
     
@@ -85,12 +93,16 @@ def newyfcodeupdate():
 
 @app.route('/output')
 def output():
-     with mysql_func().connect() as conn:
-        output_df=outputcount(conn)
-        output_df_len=len(output_df)
-        conn.close()
+    if session.get("fullname"):
+        with mysql_func().connect() as conn:
+            output_df=outputcount(conn)
+            output_df_len=len(output_df)
+            conn.close()
 
-        return render_template('output.html', dfs=output_df,len=output_df_len)  #Calling function outputcount()
+            return render_template('output.html', dfs=output_df,len=output_df_len)  #Calling function outputcount()
+    else:
+
+        return redirect("/")
         
 
 
@@ -101,13 +113,15 @@ def output():
 
 @app.route('/execute')
 def execute():
-     with mysql_func().connect() as conn:
-        output_df=outputcount(conn)
-        output_df_len=len(output_df)
-        conn.close()
+    if session.get("fullname"):
+        with mysql_func().connect() as conn:
+            output_df=outputcount(conn)
+            output_df_len=len(output_df)
+            conn.close()
 
-        return render_template('execute.html', dfs=output_df,len=output_df_len)  #Calling function outputcount()
-        
+            return render_template('execute.html', dfs=output_df,len=output_df_len)  #Calling function outputcount()
+    else:
+        return redirect("/")
 
 @app.route('/execute_output', methods=['GET', 'POST'])
 def execute_output():
@@ -135,8 +149,8 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/login',methods=['POST','GET'])
-def login():
+@app.route('/login_check',methods=['POST','GET'])
+def login_check():
     
 
     if request.method=='POST':
@@ -147,10 +161,11 @@ def login():
 
         with mysql_func().connect() as conn:
             str1=pwd_check(conn,username,password)
-            conn.close()
+            #print(str1)
+            
             
             if str1[0]=='yes':
-                return render_template('home.html',sess_user=str1[1],full_name=str1[2])
+                return redirect(url_for('home'))
 
             else:
                 flash("incorrect username or password")
@@ -161,7 +176,9 @@ def login():
 
 @app.route('/logout')    
 def logout():
-    return render_template('index.html')
+    session['fullname']=None
+    #return render_template('index.html')
+    return redirect("/")
 
 
 

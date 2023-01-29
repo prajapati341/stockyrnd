@@ -155,7 +155,7 @@ h2       { color: #377ba8; }
 
     
         <div style="color: white;float:right;font-weight: bold;">
-            <a href="{{url_for('logout')}}"><p>Logout</p></a>
+           <p>{{session.fullname}}</p><a href="{{url_for('logout')}}"><p>Logout</p></a>
         </div>
     
 
