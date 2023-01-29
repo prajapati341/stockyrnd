@@ -63,6 +63,7 @@ def outputcount(conn):
     '''
     result=conn.execute(output_query)
     df=pd.DataFrame(result)
+    
 
     return df
 
@@ -102,9 +103,12 @@ def execute_yf_code(conn):
 
     
     stock_data_temp2.to_sql('stock_data',con=conn,index=False,if_exists='append')    
-    a=list(stock_data_temp2['Company_Code'].unique())
+    a=list(stock_data_temp2['Company_Code'].unique())  #list out all company code
     return a
-    #stock_data_temp2.head()
+
+
+
+
     
 
     

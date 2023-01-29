@@ -94,7 +94,7 @@
 
     <div class="logoutbutton" style="float:right;">
         <div style="color: white;">
-            <p> Hello, {{sess_user}} Logout</p>
+            <p> Hello, {{full_name}} Logout</p>
         </div>
         
         
@@ -110,14 +110,16 @@
 
 
 <div>
+  <form action="{{url_for('home')}}", method="post">
     <table style="border: 1px solid #990000; border-collapse: collapse">
             <th>id</th>
             <th>id</th>
             <th>id</th>
             <th>id</th>
             <th>id</th>
+            <input type="submit" value="Please Submit">
     </table>
-    
+  </form>
 </div>
 
 

@@ -6,9 +6,10 @@ from sqlalchemy import engine,create_engine
 
 import pymysql
 from sqlalchemy import MetaData,Table, Column, Integer, String,Float,DateTime
+
 import warnings
 import logging  
-from funclist import sucess_fun,mysql_func
+from funclist import sucess_fun,mysql_func,pwd_check
 from executefunc import gettest,outputcount,sector_list_query,execute_yf_code
 
 from flask import Flask,render_template,request,redirect, url_for,session,flash
@@ -23,7 +24,8 @@ def newyfcode():
     with mysql_func().connect() as conn:
         
         get_all_df=outputcount(conn)  #function outputcount
-        sector_df=sector_list_query(conn) #function sector_list_query
+        sector_df=sector_list_query(conn) #function sector_list_query for drop_down
+    conn.close()
 
         
         
@@ -50,6 +52,7 @@ def newyfcodeupdate():
         stock_data=request.form['stock_data']
         
         with mysql_func().connect() as conn:
+            newyfcodeupdate(conn,company_name,company_code,company_sector)
 
             check_code_query=f"select distinct company_code from company_code where company_code='{company_code}'"
             check_code_df=conn.execute(check_code_query).fetchone()
@@ -85,9 +88,15 @@ def output():
      with mysql_func().connect() as conn:
         output_df=outputcount(conn)
         output_df_len=len(output_df)
+        conn.close()
 
         return render_template('output.html', dfs=output_df,len=output_df_len)  #Calling function outputcount()
-        conn.close()
+        
+
+
+
+
+
 
 
 @app.route('/execute')
@@ -95,17 +104,20 @@ def execute():
      with mysql_func().connect() as conn:
         output_df=outputcount(conn)
         output_df_len=len(output_df)
+        conn.close()
 
         return render_template('execute.html', dfs=output_df,len=output_df_len)  #Calling function outputcount()
-        conn.close()
+        
 
 @app.route('/execute_output', methods=['GET', 'POST'])
 def execute_output():
+
     with mysql_func().connect() as conn:
         msg=execute_yf_code(conn)
         flash(msg)
+        conn.close()
         
-        #return render_template('execute.html')
+        
         return redirect(url_for('execute'))
 
 
@@ -118,7 +130,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/home')
+@app.route('/home',methods=['POST','GET'])
 def home():
     return render_template('home.html')
 
@@ -132,24 +144,19 @@ def login():
         username=login_result['username']
         password=login_result['password']
 
+
         with mysql_func().connect() as conn:
-            result=conn.execute("select * from login_table where username=\'{}\' and password=\'{}\'".format(username,password))
+            str1=pwd_check(conn,username,password)
+            conn.close()
+            
+            if str1[0]=='yes':
+                return render_template('home.html',sess_user=str1[1],full_name=str1[2])
 
-            rows1=result.fetchone()
-    
-            if rows1:
-                
-                session['username'] = request.form.get('username')
-                
-                if 'username' in session:
-                    username=session['username']
-
-                #return redirect(url_for('home'))  #page2 is function name not html file name
-                return render_template('home.html',sess_user=username)
-                
             else:
                 flash("incorrect username or password")
                 return redirect(url_for('index'))   #home is function name not html file name
+            
+
 
 
 @app.route('/logout')    
