@@ -48,6 +48,8 @@ h2       { color: #377ba8; }
       border: 2px solid #529432;
       border: none;
       text-align: left;
+      font-size: 15px;
+      font-weight: bold;
     }
     .df2 th {
       background: #ABDD93;
@@ -67,8 +69,8 @@ h2       { color: #377ba8; }
 .headercls {
   background-color: #3e8e41;
   color: white;
-  padding: 8px;
-  font-size: 16px;
+  padding: 5px;
+  font-size: 10px;
   border: none;
   
 
@@ -108,12 +110,24 @@ h2       { color: #377ba8; }
 </head>
 <body style="background-color: #eee7e7;">
     
-<div class="headercls" align="center" >
+    <div class="headercls" align="center" >
     
-    <p><h1>Welcome to Indian Stock Analysis<h1></p>
-    
+        <p><h1>Welcome to Indian Stocks Anslysis<h1></p>
+        
+    </div>
+
+<div style="display: flex;">
+    <div style="flex-grow:1;font-size: 15px;">
+       <span style="background-color:#ABDD93;color:#db4213;;font-weight: bold;">Hello Subscriber, {{session.fullname}}</span> 
+    </div>
+    <div style="flex-grow:10;align-items: stretch;color: white;font-weight: bold;background-color: #7013db;">
+        Demo
+    </div>    
+    <div style="color: white;font-weight: bold;background-color: #db4213;">
+      Logout
+    </div>
 </div>
-<br>
+
 <div style="background-color: #3e8e41;">
     <div class="dropdown">
         <button class="dropbtn"><b>Portfolio</b></button>
@@ -151,21 +165,9 @@ h2       { color: #377ba8; }
     </div>
 
     
-
-
-    
-        <div style="color: white;float:right;font-weight: bold;">
-           <p>{{session.fullname}}</p><a href="{{url_for('logout')}}"><p>Logout</p></a>
-        </div>
-    
-
 </div>
 
-<div  style="margin-left: auto;margin-right: auto;
-width: 80%;background-color: #e3ebe3;padding: 5px;text-align: center;">
-    <b>Enter Company Code</b>
-</div>
-<br>
+
 <div style="font-weight: bold;font-size: 10px;">
    
 
