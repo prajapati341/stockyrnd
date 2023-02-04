@@ -10,7 +10,7 @@ from sqlalchemy import MetaData,Table, Column, Integer, String,Float,DateTime
 import warnings
 import logging  
 from funclist import sucess_fun,mysql_func,pwd_check,session_logout
-from executefunc import gettest,outputcount,sector_list_query,execute_yf_code,portfolio_record,company_list
+from executefunc import gettest,outputcount,sector_list_query,execute_yf_code,portfolio_record,company_list,fetch_portfolio_list
 
 from flask import Flask,render_template,request,redirect, url_for,session,flash
 
@@ -22,13 +22,24 @@ app.secret_key = "##44547466"
 def portfolio():
 
     if session.get('fullname'):
+        cust_id=session.get('cust_id')
         with mysql_func().connect() as conn:
             comp_code=company_list(conn)
+            portlist=fetch_portfolio_list(conn,cust_id)
+            portlist_len=len(portlist)
         conn.close()
 
-        return render_template('portfoliohome.html',comp_code=comp_code)
+        return render_template('portfoliohome.html',comp_code=comp_code,portlist=portlist,portlist_len=portlist_len)
     else:
         return redirect("/")
+
+@app.route('/portfolio/edit',methods=['GET','POST'])        
+def portfolio_edit():
+    if session.get('fullname'):
+        return render_template('portfolioedit.html')
+    else:
+        return redirect("/")
+
 
 @app.route('/portfolio_add',methods=['GET', 'POST'])
 def portfolio_add():
@@ -98,7 +109,7 @@ def newyfcodeupdate():
             stock_data=request.form['stock_data']
             
             with mysql_func().connect() as conn:
-                newyfcodeupdate(conn,company_name,company_code,company_sector)
+                #newyfcodeupdate(conn,company_name,company_code,company_sector)
 
                 check_code_query=f"select distinct company_code from company_code where company_code='{company_code}'"
                 check_code_df=conn.execute(check_code_query).fetchone()
