@@ -10,7 +10,7 @@ from sqlalchemy import MetaData,Table, Column, Integer, String,Float,DateTime
 import warnings
 import logging  
 from funclist import sucess_fun,mysql_func,pwd_check,session_logout
-from executefunc import gettest,outputcount,sector_list_query,execute_yf_code
+from executefunc import gettest,outputcount,sector_list_query,execute_yf_code,portfolio_record,company_list
 
 from flask import Flask,render_template,request,redirect, url_for,session,flash
 
@@ -20,30 +20,43 @@ app.secret_key = "##44547466"
 
 @app.route('/portfolio')
 def portfolio():
-    return render_template('portfoliohome.html')
 
+    if session.get('fullname'):
+        with mysql_func().connect() as conn:
+            comp_code=company_list(conn)
+        conn.close()
+
+        return render_template('portfoliohome.html',comp_code=comp_code)
+    else:
+        return redirect("/")
 
 @app.route('/portfolio_add',methods=['GET', 'POST'])
 def portfolio_add():
-    if request.method=="POST":
-        buydate=request.form.get('buydate')
-        stockname=request.form.get('stockname')
-
-        msg='{}{}'.format(buydate,stockname)
-        return msg
-
-    return render_template('portfoliohome.html')    
-        
+    if session.get('fullname'):
     
-    
-    
+        if request.method=="POST":
+            buydate=request.form.get('buydate')
+            stockname=request.form.get('stockname')
+            quantity=request.form.get('quantity')
+            buyval=request.form.get('buyval')
+            buyprice=request.form.get('buyprice')
+            selldate=request.form.get('selldate')
+            sellval=request.form.get('sellval')
+            sellprice=request.form.get('sellprice')
+            totalcharges=request.form.get('totalcharges')
+            profitloss=request.form.get('profitloss')
+            status=request.form.get('status')
+            cust_id=session['cust_id']
 
-        # if buydate is None:
-        #     return render_template('portfoliohome.html')
-        # else:
-        #     return '''<script>alert('hello')</script>'''
+            with mysql_func().connect() as conn:
+                msg=portfolio_record(conn,cust_id,buydate,stockname,quantity,buyval,buyprice,selldate,sellval,sellprice,totalcharges,profitloss,status)
+                flash(msg)
 
-    #return redirect("/portfolio")
+        return redirect("/portfolio")   
+    
+    else:
+
+        return redirect("/")
 
 
 @app.route('/newyfcode')

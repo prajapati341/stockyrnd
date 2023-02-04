@@ -56,11 +56,12 @@ def pwd_check(conn,username,password):
 
     if rows1:
         session['fullname']=rows1[1]   #Set username from fetchone in tuple form
-        full_name=rows1[1]
+        session['cust_id']=rows1[0]
 
         if 'fullname' in session:
             fullname=session['fullname']
-            pass_str=['yes',fullname]
+            cust_id=session['cust_id']
+            pass_str=['yes',fullname,cust_id]
             print('successful')
             
             return pass_str

@@ -11,6 +11,7 @@ import logging
 import yfinance as yf
 import datetime as dt
 import pandas as pd
+from datetime import datetime
 
 
 
@@ -106,10 +107,50 @@ def execute_yf_code(conn):
     a=list(stock_data_temp2['Company_Code'].unique())  #list out all company code
     return a
 
+def portfolio_record(conn,cust_id,buydate,stockname,quantity,buyval,buyprice,selldate,sellval,sellprice,totalcharges,profitloss,status):
+    try:
+        if selldate =='':
+            selldate=buydate
+        
+        if sellval=='':
+            sellval=0
+
+        if sellprice=='':
+            sellprice=0
+        
+        if totalcharges=='':
+            totalcharges=0
+
+        if profitloss=='':
+            profitloss=0
+
+        if status=='':
+            status='Active'
+            
+        #print(cust_id,buydate,stockname,quantity,buyval,buyprice,selldate,sellval,sellprice,totalcharges,profitloss,status)
 
 
+        query=f'''insert into user_portfolio values ({cust_id},'{buydate}','{stockname}',{quantity},{buyval},{buyprice},'{selldate}',{sellval},{sellprice},{totalcharges},{profitloss},'{status}')'''
+        
+        conn.execute(query)
+        return 'updated new record'
+    except:
+        return 'error while adding new record please check all fields'
+
+
+
+
+def company_list(conn):
+    try:
+
+        query='''
+            select distinct company_name,company_code from company_code;
+        '''
+        comp_code=conn.execute(query).fetchall()
+        comp_code=pd.DataFrame(comp_code)
+        comp_code=comp_code['company_code']
+        return comp_code
+    except:
+        return 'error in company code function'
 
     
-
-    
-

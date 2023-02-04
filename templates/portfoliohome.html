@@ -123,8 +123,25 @@ border-radius:15px;
 </style>
 
 <script>
+    function validation()
+    {
+        let company_name=document.forms['form1']['buydate'].value;
+        let company_code=document.forms['form1']['stockname'].value;
+        if (company_name==''){
+            alert("Please fill the company name");
+            return false
+        }
+        else if(company_code==''){
+            alert("Please enter YF code");
+            return false;
+        }
+        else if(company_sector==''){
+            alert("Please select the sector");
+            return false;
+        }
+    }
     
-    </script>
+</script>
     
 
 </head>
@@ -138,7 +155,7 @@ border-radius:15px;
 
 <div style="display: flex;background-color: white">
   <div style="flex-grow: 1;font-size: 15px;font-weight: bold;">
-    <span style="font-size: 8px;color:#db4213;;font-weight: bold;font-style: italic;">Hello Subscriber, {{session.fullname}}</span> 
+    <span style="font-size: 8px;color:#db4213;;font-weight: bold;font-style: italic;">Hello Subscriber, {{session.fullname}}{{session.cust_id}}</span> 
   </div>
 
   <div style="color: white;font-weight: bold;background-color: #db4213;">
@@ -184,15 +201,9 @@ border-radius:15px;
         </div>
     </div>
     
-
-    
-    <div  style="text-align: center;background: rgb(207, 206, 206);border-color: black;font-weight: bold;font-size: 16px;text-decoration: underline;">
-      
-        Output
-    </div>
 </div>
 <div>
-        <form name="f1" action="{{url_for('portfolio_add')}}" method="post">
+        <form name="f1" action="{{url_for('portfolio_add')}}" onsubmit="return validation()" method="post">
         <table class="table1">
             <tr>
                 <th>Buy Date</th>
@@ -207,11 +218,17 @@ border-radius:15px;
                 <th>Profit/Loss</th>
                 <th>Status</th>
             </tr>
-
+            
             <tr>
                 <td><input type="date" name="buydate" id="buydate"></td>
-                <td><input type="text" name="stockname" id="stockname"></td>
-                <td><input type="text" name="Quantity" id="Quantity"></td>
+                <td>
+                  <select name="stockname" id="stockname">
+                    {% for i in comp_code %}
+                    <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td><input type="text" name="quantity" id="quantity"></td>
                 <td><input type="text" name="buyval" id="buyval"></td>
                 <td><input type="text" name="buyprice" id="buyprice"></td>
                 <td><input type="date" name="selldate" id="selldate"></td>
@@ -219,12 +236,22 @@ border-radius:15px;
                 <td><input type="text" name="sellprice" id="sellprice"></td>
                 <td><input type="text" name="totalcharges" id="totalcharges"></td>
                 <td><input type="text" name="profitloss" id="profitloss"></td>
-                <td><input type="text" name="status" id="status"></td>
+                <td>
+                    <select name="status" id="status">
+                      <option value="active">Active</option>
+                      <option value="closed">Closed</option>
+                    </select>
+                </td>
                 <td><input type="submit" name="submit" id="submit" value="Add"></td>
             </tr>
         </table>
         </form>
 
+</div>
+<div>
+  {% for message in get_flashed_messages() %}
+    {{message}}
+  {% endfor %}
 </div>
 </body>
 </html>
