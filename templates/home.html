@@ -9,7 +9,7 @@
   
   background-color: #3e8e41;
   color: white;
-  padding: 12px;
+  padding: 5px;
   font-size: 16px;
   border: none;
 }
@@ -17,13 +17,10 @@
 .headercls {
   background-color: #3e8e41;
   color: white;
-  padding: 10px;
-  font-size: 16px;
+  padding: 5px;
+  font-size: 10px;
   border: none;
-  
-  
 }
-
 .dropdown {
   position: relative;
   display: inline-block;
@@ -43,7 +40,7 @@
 
 .dropdown-content a {
   color: black;
-  padding: 8px 14px;
+  padding: 4px 14px;
   text-decoration: none;
   display: block;
 }
@@ -59,16 +56,24 @@
     
 <div class="headercls" align="center" >
     
-    <p><h1>Welcome to Indian Stocks Anslysis<h1></p>
+    <h1>My Stocks Anslysis<h1>
     
 </div>
-<br>
+<div style="display: flex;">
+  <div style="flex-grow:1;font-size: 15px;">
+     <span style="font-size: 8px;color:#db4213;;font-weight: bold;font-style: italic;">Hello Subscriber, {{session.fullname}}</span> 
+  </div>
+  
+  <div >
+    <a style="color: white;font-weight: bold;background-color: #db4213;text-decoration: none;" href="{{url_for('logout')}}">Logout</a>
+  </div>
+</div>
 
 <div style="background-color: #3e8e41;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);">
     <div class="dropdown">
         <button class="dropbtn"><b>Portfolio</b></button>
         <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
-            <a href="#">My Portfolio</a>
+            <a href="{{url_for('portfolio')}}">My Portfolio</a>
             <a href="#">Target</a>
             
         </div>
@@ -92,14 +97,7 @@
     </div>
 
     
-    <div style="float: right;">
-        <div class="dropdown" style="background-color: beige;border-radius: 15px;">    
-              <p style="font-weight: bold;font-size: 13px;">{{session.fullname}}</p>
-        </div>
-        <div class="dropdown" style="background-color: rgb(253, 73, 2);cursor: pointer;border-radius: 20px;" >
-            <p style="font-weight: bold;font-size: 13px;color: whitesmoke;">Logout</p>
-        </div>
-    </div>
+    
 
 </div>
 

@@ -61,7 +61,7 @@ h2       { color: #377ba8; }
   
   background-color: #3e8e41;
   color: white;
-  padding: 12px;
+  padding: 5px;
   font-size: 16px;
   border: none;
 }
@@ -96,7 +96,7 @@ h2       { color: #377ba8; }
 
 .dropdown-content a {
   color: black;
-  padding: 8px 14px;
+  padding: 4px 14px;
   text-decoration: none;
   display: block;
 }
@@ -112,19 +112,17 @@ h2       { color: #377ba8; }
     
     <div class="headercls" align="center" >
     
-        <p><h1>Welcome to Indian Stocks Anslysis<h1></p>
+        <p><h1>My Stocks Anslysis<h1></p>
         
     </div>
 
 <div style="display: flex;">
     <div style="flex-grow:1;font-size: 15px;">
-       <span style="background-color:#ABDD93;color:#db4213;;font-weight: bold;">Hello Subscriber, {{session.fullname}}</span> 
+        <span style="font-size: 8px;color:#db4213;;font-weight: bold;font-style: italic;">Hello Subscriber, {{session.fullname}}</span> 
     </div>
-    <div style="flex-grow:10;align-items: stretch;color: white;font-weight: bold;background-color: #7013db;">
-        Demo
-    </div>    
-    <div style="color: white;font-weight: bold;background-color: #db4213;">
-      Logout
+    
+    <div >
+      <a style="color: white;font-weight: bold;background-color: #db4213;text-decoration: none;" href="{{url_for('logout')}}">Logout</a>
     </div>
 </div>
 
@@ -132,7 +130,7 @@ h2       { color: #377ba8; }
     <div class="dropdown">
         <button class="dropbtn"><b>Portfolio</b></button>
         <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
-            <a href="#">My Portfolio</a>
+            <a href="{{url_for('portfolio')}}">My Portfolio</a>
             <a href="#">Target</a>
             
         </div>

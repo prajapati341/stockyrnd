@@ -18,6 +18,33 @@ app = Flask(__name__)
 app.secret_key = "##44547466"
 
 
+@app.route('/portfolio')
+def portfolio():
+    return render_template('portfoliohome.html')
+
+
+@app.route('/portfolio_add',methods=['GET', 'POST'])
+def portfolio_add():
+    if request.method=="POST":
+        buydate=request.form.get('buydate')
+        stockname=request.form.get('stockname')
+
+        msg='{}{}'.format(buydate,stockname)
+        return msg
+
+    return render_template('portfoliohome.html')    
+        
+    
+    
+    
+
+        # if buydate is None:
+        #     return render_template('portfoliohome.html')
+        # else:
+        #     return '''<script>alert('hello')</script>'''
+
+    #return redirect("/portfolio")
+
 
 @app.route('/newyfcode')
 def newyfcode():

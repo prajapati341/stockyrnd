@@ -64,7 +64,7 @@ border-radius:15px;
   
   background-color: #3e8e41;
   color: white;
-  padding: 10px;
+  padding: 5px;
   font-size: 16px;
   border: none;
 }
@@ -99,7 +99,7 @@ border-radius:15px;
 
 .dropdown-content a {
   color: black;
-  padding: 8px 14px;
+  padding: 4px 14px;
   text-decoration: none;
   display: block;
 }
@@ -115,17 +115,17 @@ border-radius:15px;
     
 <div class="headercls" align="center" >
     
-    <p><h1>Welcome to Indian Stocks Anslysis<h1></p>
+    <h1>Your Stocks Anslysis<h1>
     
 </div>
 
 <div style="display: flex;background-color: white">
   <div style="flex-grow: 1;font-size: 15px;font-weight: bold;">
-    Hello Subscriber, {{session.fullname}}
+    <span style="font-size: 8px;color:#db4213;;font-weight: bold;font-style: italic;">Hello Subscriber, {{session.fullname}}</span> 
   </div>
 
   <div style="color: white;font-weight: bold;background-color: #db4213;">
-    Logout
+    <a style="color: white;font-weight: bold;background-color: #db4213;text-decoration: none;" href="{{url_for('logout')}}">Logout</a>
   </div>
 </div>
 
@@ -135,7 +135,7 @@ border-radius:15px;
     <div class="dropdown">
         <button class="dropbtn"><b>Portfolio</b></button>
         <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
-            <a href="#">My Portfolio</a>
+            <a href="{{url_for('portfolio')}}">My Portfolio</a>
             <a href="#">Target</a>
             
         </div>
