@@ -130,12 +130,12 @@ def portfolio_record(conn,cust_id,buydate,stockname,quantity,buyval,buyprice,sel
         #print(cust_id,buydate,stockname,quantity,buyval,buyprice,selldate,sellval,sellprice,totalcharges,profitloss,status)
 
 
-        query=f'''insert into user_portfolio values ({cust_id},'{buydate}','{stockname}',{quantity},{buyval},{buyprice},'{selldate}',{sellval},{sellprice},{totalcharges},{profitloss},'{status}')'''
+        query=f'''insert into user_portfolio values ({cust_id},'{buydate}','{stockname}',{quantity},{buyval},{buyprice},DATE('{selldate}'),{sellval},{sellprice},{totalcharges},{profitloss},'{status}')'''
         
         conn.execute(query)
         return 'updated new record'
-    except:
-        return 'error while adding new record please check all fields'
+    except :
+        return selldate
 
 
 
@@ -153,4 +153,16 @@ def company_list(conn):
     except:
         return 'error in company code function'
 
+
+def fetch_portfolio_list(conn,cust_id):
+    try:
+        query=f'''
+        select * from user_portfolio where cust_id={cust_id} order by buy_date desc;
+        '''
+        portlist=conn.execute(query).fetchall()
+        portlist=pd.DataFrame(portlist)
+        return portlist
+    except:
+        print()
+    
     
