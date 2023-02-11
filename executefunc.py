@@ -12,7 +12,7 @@ import yfinance as yf
 import datetime as dt
 import pandas as pd
 from datetime import datetime
-
+from tvDatafeed import TvDatafeed, Interval
 
 
 
@@ -80,20 +80,17 @@ def sector_list_query(conn):
         return 'Exception occurred :',e
 
 
-def execute_yf_code(conn):
+def execute_yf_code(conn):    # Daywise extraction from YF
+
+
     max_query_day='''
-      select company_name,company_code,date(max(date)) max_date,date_add(date(max(date)),interval 1 day) start_date,date(now()) end_date  from stock_data  group by company_name,company_code;
+      select company_name,company_code,concat(date(max(date)),' 00:00:00') max_date,date_add(date(max(date)),interval 1 day) start_date,date(now()) end_date  from stock_data  group by company_name,company_code;
       '''
 
     exec_df=pd.DataFrame(conn.execute(max_query_day))
 
-
     stock_data_temp1=pd.DataFrame()
     stock_data_temp2=pd.DataFrame()
-
-
-    stock_data_interval_temp1=pd.DataFrame()
-    stock_data_interval_temp2=pd.DataFrame()
 
     for i in range(len(exec_df)):
 
@@ -105,43 +102,103 @@ def execute_yf_code(conn):
         stock_data_temp1['Company_Name']=exec_df.loc[i]['company_name']
         stock_data_temp1['Company_Code']=exec_df.loc[i]['company_code']
         stock_data_temp1=stock_data_temp1.reset_index()
-
+        
+        max_dt=exec_df.loc[i]['max_date']
+        max_dt2=f"'{max_dt}'"
+        stock_data_temp1=stock_data_temp1[stock_data_temp1['Date']>max_dt2]
         stock_data_temp2=pd.concat([stock_data_temp1,stock_data_temp2])
+        
+        
+             
         #-------------------------------------------------------------------------------
-
 
     
     stock_data_temp2.to_sql('stock_data',con=conn,index=False,if_exists='append')  # 1 day interval  
 
 
 
-
-    # max_query_interval='''
-    #   select company_name,company_code,date(max(DATETIME)) max_date,date_add(date(max(DATETIME)),interval 1 day) start_date,date(now()) end_date  from stock_data_interval  group by company_name,company_code;
-    #   '''
-
-    # exec_interval_df=pd.DataFrame(conn.execute(max_query_interval))
-    # #exec_df.head()
-
-    # for i in range(len(exec_interval_df)):
-
-    #     # Interval of 1 min data extraction
-    #     #-------------------------------------------------------------------------------
-
-    #     stock_data_interval_temp1=yf.download(exec_interval_df.loc[i]['company_code'], exec_interval_df.loc[i]['start_date'], exec_interval_df.loc[i]['end_date'],interval='1m')
-
-    #     stock_data_interval_temp1['Company_Name']=exec_interval_df.loc[i]['company_name']
-    #     stock_data_interval_temp1['Company_Code']=exec_interval_df.loc[i]['company_code']
-    #     stock_data_interval_temp1=stock_data_interval_temp1.reset_index()
-
-    #     stock_data_interval_temp2=pd.concat([stock_data_interval_temp1,stock_data_interval_temp2])
-    #     #-------------------------------------------------------------------------------
-
-
-    # stock_data_interval_temp2.to_sql('stock_data_interval',con=conn,index=False,if_exists='append')    #1 min interval
-
     a=list(stock_data_temp2['Company_Code'].unique())  #list out all company code
     return a
+
+
+def exec_yf_interval(conn):    #1 minute interval extraction from YF
+    max_query_interval='''
+                        select distinct company_name,company_code,max(datetime) max_date  from stock_data_interval  
+                        group by company_name,company_code;
+                        '''
+    exec_df=pd.DataFrame(conn.execute(max_query_interval))
+    stock_data_interval_temp1=pd.DataFrame()
+    stock_data_interval_temp2=pd.DataFrame()
+
+    for i in range(len(exec_df)):
+        
+        stock_data_interval_temp1=yf.download(exec_df.loc[i]['company_code'],interval="1m")
+
+        stock_data_interval_temp1['Company_Name']=exec_df.loc[i]['company_name']
+        stock_data_interval_temp1['Company_Code']=exec_df.loc[i]['company_code']
+
+        
+        stock_data_interval_temp1=stock_data_interval_temp1.reset_index()
+        max_dt=exec_df.loc[i]['max_date']
+        max_dt2=f"'{max_dt}'"
+        stock_data_interval_temp1=stock_data_interval_temp1[stock_data_interval_temp1['Datetime']>max_dt2]
+
+        stock_data_interval_temp2=pd.concat([stock_data_interval_temp1,stock_data_interval_temp2])
+    
+
+    stock_data_interval_temp2.to_sql('stock_data_interval',con=conn,index=False,if_exists='append')
+    
+
+
+
+def exec_interval(conn):
+    try:
+        with open('cred.json','r') as cred_file:
+            cred=cred_file.read()
+        obj=json.loads(cred)
+        tv_user=obj['tv_user']
+        tv_pwd=obj['tv_pwd']
+
+        tv=TvDatafeed(tv_user,tv_pwd)
+        
+    except:
+        return 'Problem while fetching data from Trading view'
+
+
+    max_query_interval='''
+                        select distinct company_name,company_code from stock_data
+                        '''
+
+    exec_interval_df=pd.DataFrame(conn.execute(max_query_interval))
+
+    stock_data_interval_temp1=pd.DataFrame()
+    stock_data_interval_temp2=pd.DataFrame()
+
+    for i in range(len(exec_interval_df)):
+
+        
+        str1=exec_interval_df.loc[i]['company_code']
+        cmp_code=str1.replace('.NS','')
+
+        stock_data_interval_temp1 = tv.get_hist(symbol=cmp_code,exchange='NSE',interval=Interval.in_1_minute,n_bars=10000)
+
+        stock_data_interval_temp1['Company_Name']=exec_interval_df.loc[i]['company_name']
+        stock_data_interval_temp1['Company_Code']=f'{cmp_code}.NS'
+        stock_data_interval_temp1['Adj Close']=stock_data_interval_temp1['close']
+        stock_data_interval_temp1=stock_data_interval_temp1.reset_index()
+
+
+        stock_data_interval_temp2=pd.concat([stock_data_interval_temp1,stock_data_interval_temp2])
+        
+        #-------------------------------------------------------------------------------
+
+    stock_data_interval_temp2.rename(columns={'datetime':'Datetime','open':'Open','high':'High','low':'Low','close':'Close','volume':'Volume'},inplace=True)
+    stock_data_interval_temp2.drop(columns={'symbol'},inplace=True)
+
+    stock_data_interval_temp2.to_sql('stock_data_interval',con=conn,index=False,if_exists='append')    #1 min interval
+
+    
+
 
 def portfolio_record(conn,cust_id,buydate,stockname,quantity,buyval,buyprice,selldate,sellval,sellprice,totalcharges,profitloss,status):
     try:

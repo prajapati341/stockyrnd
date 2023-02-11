@@ -122,7 +122,7 @@ border-radius:15px;
 
 <div style="display: flex;background-color: white">
         <div style="flex-grow: 1;font-size: 15px;font-weight: bold;">
-          <span style="font-size: 8px;color:#db4213;;font-weight: bold;font-style: italic;">Hello Subscriber, {{session.fullname}}</span> 
+          <span style="font-size: 12px;color:#db4213;;font-weight: bold;font-style: italic;">Hello Subscriber, {{session.fullname}}</span> 
         </div>
 
         <div style="color: white;font-weight: bold;background-color: #db4213;">
@@ -130,7 +130,7 @@ border-radius:15px;
         </div>
 </div>
 
-<div style="background-color: #3e8e41;">
+<div style="background-color: #3e8e41;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);">
     <div class="dropdown">
         <button class="dropbtn"><b>Portfolio</b></button>
         <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
@@ -218,8 +218,8 @@ border-radius:15px;
 
   <div style="margin-left: auto;margin-right: auto;">
           <a href="{{url_for('execute_output')}}"><button type="button" class="exec_button" >Refresh YF Codes</button></a>
-
-          <a href="{{url_for('execute_interval')}}"><button type="button" class="exec_button" >Refresh YF & tv Interval</button></a>
+          <a href="{{url_for('execute_yf_interval')}}"><button type="button" class="exec_button" >Refresh YF Interval</button></a>
+          <a href="{{url_for('execute_interval')}}"><button type="button" class="exec_button" >Refresh TradingView Interval</button></a>
           <input type="button" class="exec_button" value="Delete Duplicate Records">
   </div>
 

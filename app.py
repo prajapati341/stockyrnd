@@ -10,7 +10,7 @@ from sqlalchemy import MetaData,Table, Column, Integer, String,Float,DateTime
 import warnings
 import logging  
 from funclist import sucess_fun,mysql_func,pwd_check,session_logout
-from executefunc import gettest,outputcount,sector_list_query,execute_yf_code,portfolio_record,company_list,fetch_portfolio_list
+from executefunc import gettest,outputcount,sector_list_query,execute_yf_code,portfolio_record,company_list,fetch_portfolio_list,exec_interval,exec_yf_interval
 
 from flask import Flask,render_template,request,redirect, url_for,session,flash
 
@@ -186,9 +186,23 @@ def execute_output():
 
 @app.route('/execute_interval')
 def execute_interval():
-        #print('interval check')
-        app.logger.info('interval info log')
+
+    with mysql_func().connect() as conn:
+        msg=exec_interval(conn)
+        flash(msg)
+        conn.close()
         return redirect(url_for('execute'))
+
+@app.route('/execute_yf_interval')
+def execute_yf_interval():
+
+    with mysql_func().connect() as conn:
+        msg=exec_yf_interval(conn)
+        flash(msg)
+        conn.close()
+        return redirect(url_for('execute'))
+
+
 
 
 
