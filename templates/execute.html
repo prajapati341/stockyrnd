@@ -170,7 +170,7 @@ border-radius:15px;
 
 <br>
 
-<form name="exec_form1" action="{{url_for('execute_output')}}" onsubmit="return validation()" method="post">
+
 <div class="fixTableHead">
 <table class="tb1" style="font-weight: bold;font-size: 10px;">
   <tr style="position: sticky;top: 0;">
@@ -215,15 +215,14 @@ border-radius:15px;
             width: 7%;color: #db4213;font-weight: bold;font-size: 5px;text-decoration: underline;">{{ message }}</div>
   {% endfor %}
 
-<div style="margin-left: auto;margin-right: auto;">
-  
-  <input type="submit" class="exec_button" value="Refresh YF Codes">
-</div>
-<div style="margin-left: auto;margin-right: auto;">
-  
-  <img src='/static/output_img/pie_output_img.png' alt="">
-</div>
-</form>
+
+  <div style="margin-left: auto;margin-right: auto;">
+          <a href="{{url_for('execute_output')}}"><button type="button" class="exec_button" >Refresh YF Codes</button></a>
+
+          <a href="{{url_for('execute_interval')}}"><button type="button" class="exec_button" >Refresh YF & tv Interval</button></a>
+          <input type="button" class="exec_button" value="Delete Duplicate Records">
+  </div>
+
 
     
 <!-- <img src="{{url_for('static', filename='stocks_img.png')}}" >  -->

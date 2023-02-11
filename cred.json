@@ -1,4 +1,7 @@
 {"user":"root",
 "pwd":"1234",
 "host":"localhost",
-"database":"stock_store"}
+"database":"stock_store",
+"tv_user":"SANJAY_PR",
+"tv_pwd":"Sanj@4532"
+}

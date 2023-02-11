@@ -174,18 +174,21 @@ def execute():
     else:
         return redirect("/")
 
-@app.route('/execute_output', methods=['GET', 'POST'])
+@app.route('/execute_output')
 def execute_output():
 
     with mysql_func().connect() as conn:
         msg=execute_yf_code(conn)
         flash(msg)
         conn.close()
-        
-        
         return redirect(url_for('execute'))
 
 
+@app.route('/execute_interval')
+def execute_interval():
+        #print('interval check')
+        app.logger.info('interval info log')
+        return redirect(url_for('execute'))
 
 
 

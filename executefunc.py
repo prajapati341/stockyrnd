@@ -81,18 +81,24 @@ def sector_list_query(conn):
 
 
 def execute_yf_code(conn):
-    max_query='''
+    max_query_day='''
       select company_name,company_code,date(max(date)) max_date,date_add(date(max(date)),interval 1 day) start_date,date(now()) end_date  from stock_data  group by company_name,company_code;
       '''
 
-    exec_df=pd.DataFrame(conn.execute(max_query))
-    exec_df.head()
+    exec_df=pd.DataFrame(conn.execute(max_query_day))
 
 
     stock_data_temp1=pd.DataFrame()
     stock_data_temp2=pd.DataFrame()
 
+
+    stock_data_interval_temp1=pd.DataFrame()
+    stock_data_interval_temp2=pd.DataFrame()
+
     for i in range(len(exec_df)):
+
+        # Day wise data extraction
+        #-------------------------------------------------------------------------------
 
         stock_data_temp1=yf.download(exec_df.loc[i]['company_code'], exec_df.loc[i]['start_date'], exec_df.loc[i]['end_date'])
 
@@ -101,9 +107,39 @@ def execute_yf_code(conn):
         stock_data_temp1=stock_data_temp1.reset_index()
 
         stock_data_temp2=pd.concat([stock_data_temp1,stock_data_temp2])
+        #-------------------------------------------------------------------------------
+
 
     
-    stock_data_temp2.to_sql('stock_data',con=conn,index=False,if_exists='append')    
+    stock_data_temp2.to_sql('stock_data',con=conn,index=False,if_exists='append')  # 1 day interval  
+
+
+
+
+    # max_query_interval='''
+    #   select company_name,company_code,date(max(DATETIME)) max_date,date_add(date(max(DATETIME)),interval 1 day) start_date,date(now()) end_date  from stock_data_interval  group by company_name,company_code;
+    #   '''
+
+    # exec_interval_df=pd.DataFrame(conn.execute(max_query_interval))
+    # #exec_df.head()
+
+    # for i in range(len(exec_interval_df)):
+
+    #     # Interval of 1 min data extraction
+    #     #-------------------------------------------------------------------------------
+
+    #     stock_data_interval_temp1=yf.download(exec_interval_df.loc[i]['company_code'], exec_interval_df.loc[i]['start_date'], exec_interval_df.loc[i]['end_date'],interval='1m')
+
+    #     stock_data_interval_temp1['Company_Name']=exec_interval_df.loc[i]['company_name']
+    #     stock_data_interval_temp1['Company_Code']=exec_interval_df.loc[i]['company_code']
+    #     stock_data_interval_temp1=stock_data_interval_temp1.reset_index()
+
+    #     stock_data_interval_temp2=pd.concat([stock_data_interval_temp1,stock_data_interval_temp2])
+    #     #-------------------------------------------------------------------------------
+
+
+    # stock_data_interval_temp2.to_sql('stock_data_interval',con=conn,index=False,if_exists='append')    #1 min interval
+
     a=list(stock_data_temp2['Company_Code'].unique())  #list out all company code
     return a
 
