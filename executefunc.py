@@ -166,7 +166,8 @@ def exec_interval(conn):
 
 
     max_query_interval='''
-                        select distinct company_name,company_code from stock_data
+                        select distinct company_name,company_code,max(Datetime) max_date from stock_data_interval
+                        group by company_name,company_code
                         '''
 
     exec_interval_df=pd.DataFrame(conn.execute(max_query_interval))
@@ -186,7 +187,9 @@ def exec_interval(conn):
         stock_data_interval_temp1['Company_Code']=f'{cmp_code}.NS'
         stock_data_interval_temp1['Adj Close']=stock_data_interval_temp1['close']
         stock_data_interval_temp1=stock_data_interval_temp1.reset_index()
-
+        max_dt=exec_interval_df.loc[i]['max_date']
+        max_dt2=f"'{max_dt}'"
+        stock_data_interval_temp1=stock_data_interval_temp1[stock_data_interval_temp1['datetime']>max_dt2]
 
         stock_data_interval_temp2=pd.concat([stock_data_interval_temp1,stock_data_interval_temp2])
         
