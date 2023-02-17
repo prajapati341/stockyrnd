@@ -241,7 +241,7 @@ border-radius:15px;
 <br>
 <div>
         <form name="f1" action="{{url_for('portfolio_add')}}" onsubmit="return validation()" method="post">
-        <table class="table1">
+        <table class="table1" style="width:100%;">
             <tr>
                 <th>Buy Date</th>
                 <th>Stock Name</th>
@@ -332,8 +332,8 @@ border-radius:15px;
           {%endif%}
         </td>
         <td>
-          <a href="{{url_for('portfolio_edit')}}"  style="text-decoration:none;font-weight: bold;font-size: 5px;background-color: #57aa31;color: white;">Edit</a>
-          <a href=""  style="text-decoration:none;font-weight: bold;font-size: 5px;background-color: red;color: white;">Delete</a>
+          <a href="{{url_for('portfolio_edit')}}"  style="text-decoration:none;font-weight: bold;font-size: 10px;background-color: #57aa31;color: white;">Edit</a>
+          <a href=""  style="text-decoration:none;font-weight: bold;font-size: 10px;background-color: red;color: white;">Delete</a>
         </td>
       </tr>
       {%endfor%}

@@ -179,6 +179,7 @@ def exec_interval(conn):
 
         
         str1=exec_interval_df.loc[i]['company_code']
+        
         cmp_code=str1.replace('.NS','')
 
         stock_data_interval_temp1 = tv.get_hist(symbol=cmp_code,exchange='NSE',interval=Interval.in_1_minute,n_bars=10000)

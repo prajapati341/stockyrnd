@@ -233,7 +233,7 @@ def login_check():
             
             
             if str1[0]=='yes':
-                return redirect(url_for('home'))
+                return redirect(url_for('portfolio'))
 
             else:
                 flash("incorrect username or password")
