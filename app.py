@@ -25,7 +25,7 @@ def intraday():
         cust_id=session.get('cust_id')
         with mysql_func().connect() as conn:
             comp_code=company_list(conn)
-            portlist=indics_chart(conn)
+            img_file=indics_chart(conn)
 
         conn.close()
 
