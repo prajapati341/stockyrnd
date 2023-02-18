@@ -131,6 +131,7 @@ def exec_yf_interval(conn):    #1 minute interval extraction from YF
     stock_data_interval_temp2=pd.DataFrame()
 
     for i in range(len(exec_df)):
+
         
         stock_data_interval_temp1=yf.download(exec_df.loc[i]['company_code'],interval="1m")
 
@@ -151,7 +152,7 @@ def exec_yf_interval(conn):    #1 minute interval extraction from YF
 
 
 
-def exec_interval(conn):
+def exec_interval(conn):     #1m interval from Tradingview
     try:
         with open('cred.json','r') as cred_file:
             cred=cred_file.read()
@@ -166,7 +167,7 @@ def exec_interval(conn):
 
 
     max_query_interval='''
-                        select distinct company_name,company_code,max(Datetime) max_date from stock_data_interval
+                        select distinct company_name,company_code,max(Datetime) max_date from stock_data_interval where company_code='^NSEI'
                         group by company_name,company_code
                         '''
 
@@ -177,12 +178,12 @@ def exec_interval(conn):
 
     for i in range(len(exec_interval_df)):
 
-        
         str1=exec_interval_df.loc[i]['company_code']
-        
+
         cmp_code=str1.replace('.NS','')
 
         stock_data_interval_temp1 = tv.get_hist(symbol=cmp_code,exchange='NSE',interval=Interval.in_1_minute,n_bars=10000)
+        
 
         stock_data_interval_temp1['Company_Name']=exec_interval_df.loc[i]['company_name']
         stock_data_interval_temp1['Company_Code']=f'{cmp_code}.NS'

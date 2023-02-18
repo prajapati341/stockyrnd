@@ -205,7 +205,7 @@ border-radius:15px;
         <button class="dropbtn"><b>Portfolio</b></button>
         <div class="dropdown-content" style="font-size: 15px;font-weight: bold;">
             <a href="{{url_for('portfolio')}}">My Portfolio</a>
-            <a href="{{url_for('intraday')}}">Intraday Analysis</a>
+            <a href="#">Intraday Analysis</a>
             
         </div>
     </div>
@@ -238,119 +238,16 @@ border-radius:15px;
     
 </div>
 
-<br>
 <div>
-        <form name="f1" action="{{url_for('portfolio_add')}}" onsubmit="return validation()" method="post">
-        <table class="table1" style="width:100%;">
-            <tr>
-                <th>Buy Date</th>
-                <th>Stock Name</th>
-                <th>Quantity</th>
-                <th>Buy Value</th>
-                <th>Buy Price</th>
-                <th>Sell Date</th>
-                <th>Sell Value</th>
-                <th>Sell Price</th>
-                <th>Total Charges</th>
-                <th>Profit/Loss</th>
-                <th>Status</th>
-            </tr>
-            
-            <tr>
-                <td><input type="date" name="buydate" id="buydate"></td>
-                <td>
-                  <select name="stockname" id="stockname">
-                    {% for i in comp_code %}
-                    <option value="{{i}}">{{i}}</option>
-                    {% endfor %}
-                  </select>
-                </td>
-                <td><input type="text" name="quantity" id="quantity"></td>
-                <td><input type="text" name="buyval" id="buyval"></td>
-                <td><input type="text" name="buyprice" id="buyprice"></td>
-                <td><input type="date" name="selldate" id="selldate"></td>
-                <td><input type="text" name="sellval" id="sellval"></td>
-                <td><input type="text" name="sellprice" id="sellprice"></td>
-                <td><input type="text" name="totalcharges" id="totalcharges"></td>
-                <td><input type="text" name="profitloss" id="profitloss"></td>
-                <td>
-                    <select name="status" id="status">
-                      <option value="Active">Active</option>
-                      <option value="Closed">Closed</option>
-                    </select>
-                </td>
-                <td><input type="submit" name="submit" id="submit" value="Add"></td>
-            </tr>
-        </table>
-        </form>
-
-</div>
-<div>
-  {% for message in get_flashed_messages() %}
-    {{message}}
-  {% endfor %}
-</div>
-
-<br>
-
-<div class="fixTableHead">
-  <form name="f2" action="{{url_for('portfolio_edit')}}"  method="post">
-  <table class="table2">
-      <tr style="position: sticky;top: 0;">
-          <th>Buy Date</th>
-          <th>Stock Name</th>
-          <th>Quantity</th>
-          <th>Buy Value</th>
-          <th>Buy Price</th>
-          <th>Sell Date</th>
-          <th>Sell Value</th>
-          <th>Sell Price</th>
-          <th>Total Charges</th>
-          <th>Profit/Loss</th>
-          <th>Status</th>
-          <th>Update</th>
-      </tr>
-      
-      {% for i in range(0,portlist_len)%}
-      <tr>
-        
-        <td>{{portlist.loc[i]['buy_date']}}</td>
-        <td>{{portlist.loc[i]['stock_name']}}</td>
-        <td>{{portlist.loc[i]['quantity']}}</td>
-        <td>{{portlist.loc[i]['buy_value']}}</td>
-        <td>{{portlist.loc[i]['buy_price']}}</td>
-        <td>{{portlist.loc[i]['sell_date']}}</td>
-        <td>{{portlist.loc[i]['sell_value']}}</td>
-        <td>{{portlist.loc[i]['sell_price']}}</td>
-        <td>{{portlist.loc[i]['total_charges']}}</td>
-        <td>{{portlist.loc[i]['profit_loss']}}</td>
-        <td>
-          {% if portlist.loc[i]['status']=='Active'%}
-          <span style="color:Green;font-weight: bold;">{{portlist.loc[i]['status']}}</span>
-          {% else %}
-          <span style="color:red;font-weight: bold;">{{portlist.loc[i]['status']}}</span>
-          {%endif%}
-        </td>
-        <td>
-          <a href="{{url_for('portfolio_edit')}}"  style="text-decoration:none;font-weight: bold;font-size: 10px;background-color: #57aa31;color: white;">Edit</a>
-          <a href=""  style="text-decoration:none;font-weight: bold;font-size: 10px;background-color: red;color: white;">Delete</a>
-        </td>
-      </tr>
-      {%endfor%}
-  </table>
-  </form>
-
-</div>
-
-<div>
-  
-  <input type="text" value="Select Company Code">
-  <select name="stockname" id="stockname">
-    {% for i in comp_code %}
-    <option value="{{i}}">{{i}}</option>
-    {% endfor %}
-  </select>
-  <a href="" ><button>Generate Chart</button></a>
+  <form action="">
+            <input type="text" value="Select Company Code">
+            <select name="stockname" id="stockname">
+                {% for i in comp_code %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Generate Chart">
+ </form>
 </div>
 
 
