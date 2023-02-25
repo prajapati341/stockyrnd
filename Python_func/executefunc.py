@@ -264,3 +264,8 @@ def fetch_portfolio_list(conn,cust_id):
         print()
     
     
+
+
+
+    
+    
