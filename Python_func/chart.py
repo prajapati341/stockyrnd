@@ -21,7 +21,7 @@ import io
 
 def indics_chart(conn):
     query='''
-            select distinct datetime as Datetime,open,high,low,close as Close,'Adj Close',volume,company_name,company_code from stock_data_interval  where company_code='TATAMOTORS.NS';
+            select distinct datetime as Datetime,open,high,low,close as Close,'Adj Close',volume,company_name,company_code from stock_data_interval  where company_code='^NSEI';
             '''
     indics_df=pd.DataFrame(conn.execute(query))
 
@@ -29,13 +29,36 @@ def indics_chart(conn):
 
     indics_df['Days']=indics_df['Datetime'].dt.strftime('%d-%b')
     indics_df['Hour_Min']=indics_df['Datetime'].dt.strftime('%H:%M')
+    title_name=indics_df['company_code'].unique()
 
     fig,ax=plt.subplots(figsize=(20,5))
 
+    indics_df.pivot_table(index='Hour_Min',columns='Days',values='Close').plot(kind='line',ax=ax,rot=90)
+    plt.title(title_name)
+
+    plt.savefig('static/chart_img/default_chart1.png')
+
+
+def create_chart(conn,stockname):
+    print('create chart 2',stockname)
+    query=f'''
+            select distinct datetime as Datetime,open,high,low,close as Close,'Adj Close',volume,company_name,company_code from stock_data_interval  where company_code='{stockname}';
+            '''
+    indics_df=pd.DataFrame(conn.execute(query))
+
+    indics_df=indics_df[(indics_df['Datetime']>='2023-02-01 00:00:00') & (indics_df['Datetime']<='2023-02-01 23:59:59')]
+
+    indics_df['Days']=indics_df['Datetime'].dt.strftime('%d-%b')
+    indics_df['Hour_Min']=indics_df['Datetime'].dt.strftime('%H:%M')
+    title_name=indics_df['company_code'].unique()
+
+    fig,ax=plt.subplots(figsize=(20,5))
 
     indics_df.pivot_table(index='Hour_Min',columns='Days',values='Close').plot(kind='line',ax=ax,rot=90)
+    plt.title(title_name)
 
-    plt.savefig('static/chart_img/test1.png')
+    plt.savefig('static/chart_img/selected_chart1.png')
+    
     
 
 

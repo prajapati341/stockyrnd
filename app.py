@@ -11,12 +11,34 @@ import warnings
 import logging  
 from Python_func.funclist import sucess_fun,mysql_func,pwd_check,session_logout
 from Python_func.executefunc import gettest,outputcount,sector_list_query,execute_yf_code,portfolio_record,company_list,fetch_portfolio_list,exec_interval,exec_yf_interval
-from Python_func.chart import indics_chart
+from Python_func.chart import indics_chart,create_chart
 
 from flask import Flask,render_template,request,redirect, url_for,session,flash
 
 app = Flask(__name__)
 app.secret_key = "##44547466"
+
+
+
+@app.route('/set_chart',methods=['GET','POST'])
+def set_chart():
+    if session.get('fullname'):
+        cust_id=session.get('cust_id')
+
+        if request.method=="POST":
+            stockname=request.form.get('stockname')
+            with mysql_func().connect() as conn:
+                create_chart(conn,stockname)
+                
+            conn.close()
+            return redirect("/portfolio/intraday")
+
+        
+    else:
+        return redirect("/")
+
+
+
 
 
 @app.route('/portfolio/intraday')

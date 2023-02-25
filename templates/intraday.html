@@ -239,7 +239,7 @@ border-radius:15px;
 </div>
 
 <div>
-  <form action="">
+  <form action="/set_chart" method="POST">
             <input type="text" value="Select Company Code">
             <select name="stockname" id="stockname">
                 {% for i in comp_code %}
@@ -250,7 +250,26 @@ border-radius:15px;
  </form>
 </div>
 <div>
-  <img src="{{url_for('static',filename='chart_img/test1.png')}}" alt="">
+  <table style="width: 100%;">
+    <tr>
+      <td>
+        <img src="{{url_for('static',filename='chart_img/default_chart1.png')}}" width="100%" height="50%">
+      </td>
+      <td>
+        <img src="{{url_for('static',filename='chart_img/selected_chart1.png')}}" width="100%" height="50%">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="{{url_for('static',filename='chart_img/default_chart1.png')}}" width="100%" height="50%">
+      </td>
+      <td>
+        <img src="{{url_for('static',filename='chart_img/selected_chart1.png')}}" width="100%" height="50%">
+      </td>
+    </tr>
+    
+    
+</table>
 </div>
 
 
