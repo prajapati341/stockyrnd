@@ -39,7 +39,7 @@ def indics_chart(conn):
     plt.savefig('static/chart_img/default_chart1.png')
 
 
-def create_chart(conn,stockname):
+def create_chart(conn,stockname,max_val,min_val):
     #print('create chart 2',stockname)
     query=f'''
             select distinct datetime as Datetime,open,high,low,close as Close,'Adj Close',volume,company_name,company_code from stock_data_interval  
@@ -76,20 +76,26 @@ def create_chart(conn,stockname):
     df3.pivot_table(index='Hour_Min',columns='Days',values='Normalized').plot(kind='line',ax=ax,rot=90)
     
     plt.title(title_name+' [Normalized]')
-    
-
     plt.savefig('static/chart_img/selected_chart1.png')
 
 
 
     fig,ax=plt.subplots(figsize=(20,5))
+
+    
+    
+    
     try:
+        if max_val!='' or min_val!='':
+            plt.axhline(y = float(max_val),color='r')
+            plt.axhline(y = float(min_val),color='r')
 
         stock_df=indics_df[indics_df['Datetime']>=datetime.today().strftime('%Y-%m-%d')+' 00:00:00']
         stock_df.pivot_table(index='Hour_Min',columns='Days',values='Close').plot(kind='line',ax=ax,rot=90)
         plt.title(title_name)
         plt.savefig('static/chart_img/selected_chart2.png')
     except:
+        
         stock_df=indics_df[indics_df['Datetime']>=df3['Datetime'].max().strftime('%Y-%m-%d')+' 00:00:00']
         stock_df.pivot_table(index='Hour_Min',columns='Days',values='Close').plot(kind='line',ax=ax,rot=90)
         plt.title(title_name)

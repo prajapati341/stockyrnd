@@ -41,9 +41,11 @@ def set_chart():
 
         if request.method=="POST":
             stockname=request.form.get('stockname')
+            max_val=request.form.get('max_val')
+            min_val=request.form.get('min_val')
             session['stockname']=stockname
             with mysql_func().connect() as conn:
-                create_chart(conn,stockname)
+                create_chart(conn,stockname,max_val,min_val)
                 
             conn.close()
             return redirect("/portfolio/intraday")

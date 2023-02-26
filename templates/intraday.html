@@ -248,11 +248,12 @@ border-radius:15px;
             </select>
             <span>From </span><input type="date" name="from_dt" id="from_dt">
             <span>to </span><input type="date" name="to_dt" id="to_dt" value="To">
-            
-            <input type="submit" value="Generate Chart">
             <br>
             <span>Set Target line</span>
-            <span>Date</span><input type="text" name="tgt_no" id="tgt_no">
+            <br>
+            Max<input type="text" name="max_val" id="max_val">Min<input type="text" name="min_val" id="min_val">
+            <input type="submit" value="Generate Chart">
+            
  </form>
  <a href="{{url_for('refresh_stock')}}"><button>Refresh</button></a>
  
