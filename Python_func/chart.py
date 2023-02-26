@@ -25,7 +25,7 @@ def indics_chart(conn):
             '''
     indics_df=pd.DataFrame(conn.execute(query))
 
-    indics_df=indics_df[(indics_df['Datetime']>='2023-02-01 00:00:00') & (indics_df['Datetime']<='2023-02-01 23:59:59')]
+    indics_df=indics_df[indics_df['Datetime']>=indics_df['Datetime'].max().strftime('%Y-%m-%d')+' 00:00:00']
 
     indics_df['Days']=indics_df['Datetime'].dt.strftime('%d-%b')
     indics_df['Hour_Min']=indics_df['Datetime'].dt.strftime('%H:%M')
@@ -42,11 +42,13 @@ def indics_chart(conn):
 def create_chart(conn,stockname):
     #print('create chart 2',stockname)
     query=f'''
-            select distinct datetime as Datetime,open,high,low,close as Close,'Adj Close',volume,company_name,company_code from stock_data_interval  where company_code='{stockname}';
+            select distinct datetime as Datetime,open,high,low,close as Close,'Adj Close',volume,company_name,company_code from stock_data_interval  
+            where datetime>=concat(date(date_add(now(),interval -5 day)),' 00:00:00')
+            and company_code='{stockname}';
             '''
     indics_df=pd.DataFrame(conn.execute(query))
 
-    indics_df=indics_df[(indics_df['Datetime']>='2023-02-23 00:00:00') & (indics_df['Datetime']<='2023-02-24 23:59:59')]
+    #indics_df=indics_df[(indics_df['Datetime']>='2023-02-21 00:00:00') & (indics_df['Datetime']<='2023-02-24 23:59:59')]
 
     indics_df['Days']=indics_df['Datetime'].dt.strftime('%d-%b')
     indics_df['Hour_Min']=indics_df['Datetime'].dt.strftime('%H:%M')
@@ -81,9 +83,17 @@ def create_chart(conn,stockname):
 
 
     fig,ax=plt.subplots(figsize=(20,5))
-    indics_df.pivot_table(index='Hour_Min',columns='Days',values='Close').plot(kind='line',ax=ax,rot=90)
-    plt.title(title_name)
-    plt.savefig('static/chart_img/selected_chart2.png')
+    try:
+
+        stock_df=indics_df[indics_df['Datetime']>=datetime.today().strftime('%Y-%m-%d')+' 00:00:00']
+        stock_df.pivot_table(index='Hour_Min',columns='Days',values='Close').plot(kind='line',ax=ax,rot=90)
+        plt.title(title_name)
+        plt.savefig('static/chart_img/selected_chart2.png')
+    except:
+        stock_df=indics_df[indics_df['Datetime']>=df3['Datetime'].max().strftime('%Y-%m-%d')+' 00:00:00']
+        stock_df.pivot_table(index='Hour_Min',columns='Days',values='Close').plot(kind='line',ax=ax,rot=90)
+        plt.title(title_name)
+        plt.savefig('static/chart_img/selected_chart2.png')
     
     
 
@@ -118,7 +128,7 @@ def convert_data(file_name):
 
  
 
-def stock_refresh_for_chart(conn,stockname):
+def stock_refresh_for_chart(conn,stockname):         # Refresh NSE & Specific stock
     max_query_interval=f'''
                         select distinct company_name,company_code,max(datetime) max_date  from stock_data_interval
                         where company_code in ('^NSEI','{stockname}')

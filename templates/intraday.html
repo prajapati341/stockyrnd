@@ -248,10 +248,15 @@ border-radius:15px;
             </select>
             <span>From </span><input type="date" name="from_dt" id="from_dt">
             <span>to </span><input type="date" name="to_dt" id="to_dt" value="To">
-            <input type="submit" value="Generate Chart">
             
+            <input type="submit" value="Generate Chart">
+            <br>
+            <span>Set Target line</span>
+            <span>Date</span><input type="text" name="tgt_no" id="tgt_no">
  </form>
  <a href="{{url_for('refresh_stock')}}"><button>Refresh</button></a>
+ 
+
 </div>
 <div>
   <table style="width: 100%;">
@@ -262,12 +267,12 @@ border-radius:15px;
     </tr>
     <tr>
       <td>
-        <img src="{{url_for('static',filename='chart_img/selected_chart1.png')}}" width="100%" height="50%">
+        <img src="{{url_for('static',filename='chart_img/selected_chart2.png')}}" width="100%" height="50%">
       </td>
     </tr>
     <tr>
       <td>
-        <img src="{{url_for('static',filename='chart_img/selected_chart2.png')}}" width="100%" height="50%">
+        <img src="{{url_for('static',filename='chart_img/selected_chart1.png')}}" width="100%" height="50%">
       </td>
     </tr>
     
