@@ -24,8 +24,10 @@ app.secret_key = "##44547466"
 def refresh_stock():
     if session.get('fullname'):
         stockname=session['stockname']
+        max_val=session['max_val']
+        min_val=session['min_val']
         with mysql_func().connect() as conn:
-            stock_refresh_for_chart(conn,stockname)
+            stock_refresh_for_chart(conn,stockname,max_val,min_val)
         conn.close()
         return redirect("/portfolio/intraday")
         
@@ -44,6 +46,8 @@ def set_chart():
             max_val=request.form.get('max_val')
             min_val=request.form.get('min_val')
             session['stockname']=stockname
+            session['max_val']=max_val
+            session['min_val']=min_val
             with mysql_func().connect() as conn:
                 create_chart(conn,stockname,max_val,min_val)
                 

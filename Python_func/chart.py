@@ -87,8 +87,12 @@ def create_chart(conn,stockname,max_val,min_val):
     
     try:
         if max_val!='' or min_val!='':
+            
             plt.axhline(y = float(max_val),color='r')
             plt.axhline(y = float(min_val),color='r')
+        else:
+            plt.axhline(y = float(indics_df['Close'].max()),color='r')
+            plt.axhline(y = float(indics_df['Open'].max()),color='g')
 
         stock_df=indics_df[indics_df['Datetime']>=datetime.today().strftime('%Y-%m-%d')+' 00:00:00']
         stock_df.pivot_table(index='Hour_Min',columns='Days',values='Close').plot(kind='line',ax=ax,rot=90)
@@ -134,7 +138,7 @@ def convert_data(file_name):
 
  
 
-def stock_refresh_for_chart(conn,stockname):         # Refresh NSE & Specific stock
+def stock_refresh_for_chart(conn,stockname,max_val,min_val):         # Refresh NSE & Specific stock
     max_query_interval=f'''
                         select distinct company_name,company_code,max(datetime) max_date  from stock_data_interval
                         where company_code in ('^NSEI','{stockname}')
@@ -164,7 +168,8 @@ def stock_refresh_for_chart(conn,stockname):         # Refresh NSE & Specific st
     
 
     stock_data_interval_temp2.to_sql('stock_data_interval',con=conn,index=False,if_exists='append')
-    create_chart(conn,stockname)
+    
+    create_chart(conn,stockname,max_val,min_val)
 
 
 
