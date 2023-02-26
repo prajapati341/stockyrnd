@@ -45,9 +45,18 @@ def set_chart():
             stockname=request.form.get('stockname')
             max_val=request.form.get('max_val')
             min_val=request.form.get('min_val')
+            # stock_days=request.form.get('stock_days')
+            # indics_days=request.form.get('indics_days')
+
+
             session['stockname']=stockname
             session['max_val']=max_val
             session['min_val']=min_val
+
+            
+            # session['stock_days']=stock_days
+            # session['indics_days']=indics_days
+
             with mysql_func().connect() as conn:
                 create_chart(conn,stockname,max_val,min_val)
                 
@@ -313,6 +322,8 @@ def login_check():
 @app.route('/logout')    
 def logout():
     session['fullname']=None
+    session['max_val']=None
+    session['min_val']=None
     #return render_template('index.html')
     return redirect("/")
 

@@ -21,11 +21,13 @@ import io
 
 def indics_chart(conn):
     query='''
-            select distinct datetime as Datetime,open,high,low,close as Close,'Adj Close',volume,company_name,company_code from stock_data_interval  where company_code='^NSEI';
+            select distinct datetime as Datetime,open,high,low,close as Close,'Adj Close',volume,company_name,company_code from stock_data_interval  
+            where company_code='^NSEI'
+            and datetime>=concat(date(date_add(now(),interval -2 day)),' 00:00:00');
             '''
     indics_df=pd.DataFrame(conn.execute(query))
 
-    indics_df=indics_df[indics_df['Datetime']>=indics_df['Datetime'].max().strftime('%Y-%m-%d')+' 00:00:00']
+    #indics_df=indics_df[indics_df['Datetime']>=indics_df['Datetime'].max().strftime('%Y-%m-%d')+' 00:00:00']
 
     indics_df['Days']=indics_df['Datetime'].dt.strftime('%d-%b')
     indics_df['Hour_Min']=indics_df['Datetime'].dt.strftime('%H:%M')
@@ -41,6 +43,8 @@ def indics_chart(conn):
 
 def create_chart(conn,stockname,max_val,min_val):
     #print('create chart 2',stockname)
+
+
     query=f'''
             select distinct datetime as Datetime,open,high,low,close as Close,'Adj Close',volume,company_name,company_code from stock_data_interval  
             where datetime>=concat(date(date_add(now(),interval -5 day)),' 00:00:00')
@@ -86,22 +90,31 @@ def create_chart(conn,stockname,max_val,min_val):
     
     
     try:
+        
+        stock_df=indics_df[indics_df['Datetime']>=datetime.today().strftime('%Y-%m-%d')+' 00:00:00']
+        stock_df.pivot_table(index='Hour_Min',columns='Days',values='Close').plot(kind='line',ax=ax,rot=90)
         if max_val!='' or min_val!='':
             
             plt.axhline(y = float(max_val),color='r')
-            plt.axhline(y = float(min_val),color='r')
+            plt.axhline(y = float(min_val),color='g')
         else:
-            plt.axhline(y = float(indics_df['Close'].max()),color='r')
-            plt.axhline(y = float(indics_df['Open'].max()),color='g')
+            plt.axhline(y = float(stock_df['Close'].max()),color='r')
+            plt.axhline(y = float(stock_df['Close'].min()),color='green')
 
-        stock_df=indics_df[indics_df['Datetime']>=datetime.today().strftime('%Y-%m-%d')+' 00:00:00']
-        stock_df.pivot_table(index='Hour_Min',columns='Days',values='Close').plot(kind='line',ax=ax,rot=90)
         plt.title(title_name)
         plt.savefig('static/chart_img/selected_chart2.png')
     except:
         
         stock_df=indics_df[indics_df['Datetime']>=df3['Datetime'].max().strftime('%Y-%m-%d')+' 00:00:00']
         stock_df.pivot_table(index='Hour_Min',columns='Days',values='Close').plot(kind='line',ax=ax,rot=90)
+        if max_val!='' or min_val!='':
+            
+            plt.axhline(y = float(max_val),color='r')
+            plt.axhline(y = float(min_val),color='g')
+        else:
+            plt.axhline(y = float(stock_df['Close'].max()),color='r')
+            plt.axhline(y = float(stock_df['Close'].min()),color='green')
+
         plt.title(title_name)
         plt.savefig('static/chart_img/selected_chart2.png')
     

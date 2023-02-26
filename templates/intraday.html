@@ -240,19 +240,24 @@ border-radius:15px;
 
 <div>
   <form action="/set_chart" method="POST">
+    
             <span>Select Company Code</span>
             <select name="stockname" id="stockname">
                 {% for i in comp_code %}
                 <option value="{{i}}">{{i}}</option>
                 {% endfor %}
             </select>
-            <span>From </span><input type="date" name="from_dt" id="from_dt">
-            <span>to </span><input type="date" name="to_dt" id="to_dt" value="To">
+            <span>No of Days (Only for Stock) </span><input type="text" name="stock_days" id="stock_days">
+            <span>No of Days (Only for indics) </span><input type="text" name="indics_days" id="indics_days">
+            
             <br>
             <span>Set Target line</span>
             <br>
-            Max<input type="text" name="max_val" id="max_val">Min<input type="text" name="min_val" id="min_val">
+            Max<input type="text" name="max_val" id="max_val" value="{{session.max_val}}">
+            <br>
+            Min<input type="text" name="min_val" id="min_val" value="{{session.min_val}}">
             <input type="submit" value="Generate Chart">
+    
             
  </form>
  <a href="{{url_for('refresh_stock')}}"><button>Refresh</button></a>
