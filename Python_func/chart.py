@@ -76,7 +76,7 @@ def create_chart(conn,stockname,max_val,min_val):
                 #print(df3['Days'])
 
     fig,ax=plt.subplots(figsize=(20,5))
-
+    df3.to_excel('/home/sanjay/Flask_Web/myFlaskApp/dump/df3.xlsx')
     df3.pivot_table(index='Hour_Min',columns='Days',values='Normalized').plot(kind='line',ax=ax,rot=90)
     
     plt.title(title_name+' [Normalized]')
