@@ -12,7 +12,7 @@ import yfinance as yf
 import datetime as dt
 import pandas as pd
 from datetime import datetime
-from tvDatafeed import TvDatafeed, Interval
+#from tvDatafeed import TvDatafeed, Interval
 import matplotlib.pyplot as plt
 import base64
 from PIL import Image
