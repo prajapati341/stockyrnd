@@ -226,7 +226,7 @@ def portfolio_record(conn,cust_id,buydate,stockname,quantity,buyval,buyprice,sel
             status='Active'
             
         #print(cust_id,buydate,stockname,quantity,buyval,buyprice,selldate,sellval,sellprice,totalcharges,profitloss,status)
-
+        #print('test line)
 
         query=f'''insert into user_portfolio values ({cust_id},'{buydate}','{stockname}',{quantity},{buyval},{buyprice},DATE('{selldate}'),{sellval},{sellprice},{totalcharges},{profitloss},'{status}')'''
         
